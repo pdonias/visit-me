@@ -1,0 +1,134 @@
+
+
+    <h1>Studio < 350€/mois @Grenoble</h1>
+    <h3>Créée par <span id="author">Laurent F.</span> grâce à <a href="#" id="brand">veasit</span></a></h3>
+
+    <div id="table">
+
+      <table class="table table-striped">
+        <tr>
+          <th>Aperçu</th>
+          <th>Prix</th>
+          <th>Superficie</th>
+          <th>Adresse</th>
+          <th>Contact</th>
+          <th>Description | Notes</th>
+          <th><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></th>
+        </tr>
+
+        <tr ng-repeat="a in annonces">
+          <td><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
+          <td width="10%"><input class="big" type="text" value="{{a.price}}"</td>
+          <td width="10%"><input class="big" type="text" value="{{a.superf}}"</td>
+          <td><input type="text" value="{{a.address}}"</td>
+          <td><input type="text" value="{{a.contact}}"</td>
+          <td class="desc" width="30%">
+            <textarea>{{a.desc}}</textarea>
+          </td>
+          <td><a href="https://www.leboncoin.fr/locations/1089587013.htm?ca=22_s" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
+
+        </tr>
+<!--
+        <tr>
+          <td><img width="130px" src="https://img3.leboncoin.fr/ad-image/f04f4d65abfefed52b3a297e3256361529ef9087.jpg" alt="Apercu"/></td>
+          <td width="10%"><input class="big" type="text" value="340 €"</td>
+          <td width="10%"><input class="big" type="text" value="12 m2"</td>
+          <td><input type="text" value="19 rue Hébert"</td>
+          <td><input type="text" value="06 32 84 64 47"</td>
+          <td class="desc" width="30%">
+            <textarea>Dans bâtiment privé situé au 19 rue Hébert à Grenoble au milieu d'un parc privatif hyper calme, studio ensoleillé au 2ème étage. Proche de toutes commodités et à 2 minutes à pieds des 3 lignes de tram.
+Le loyer est de 300 euros et les charges de 40 euros sont fixes et non réajustées pendant toute la durée de la location. Elles comprennent chauffage, eau chaude, eau froide, électricité. La taxe d'habitation est à la charge du locataire. Appeler au 06 32 84 64 47 pour visites. Grand hall privatif pour vélos et grand grenier pour débarras
+            </textarea>
+          </td>
+          <td><a href="https://www.leboncoin.fr/locations/1089587013.htm?ca=22_s" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
+
+        </tr>
+
+        <tr>
+          <td><img width="130px" src="https://img1.leboncoin.fr/ad-image/cf172e17b3e51f53975af9aa6bb8678433537ee7.jpg" alt="Apercu"/></td>
+          <td width="10%"><input class="big" type="text" value="350 €"/></td>
+          <td width="10%"><input class="big" type="text" value="17 m2"/></td>
+          <td><input type="text" value="À définir"/></td>
+          <td><input type="text" value="06 35 93 92 02"/></td>
+          <td class="desc" width="30%">
+            <textarea>Lumineux , calme , proche commerces et marché.
+          Bus pour campus à 5mn.
+          Clic-clac, bureau, cuisine équipée.
+          Libre le 13/02/17</textarea>
+        </td>
+        <td><a href="https://www.leboncoin.fr/locations/1089561396.htm?ca=22_s" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
+
+          </tr>
+
+
+          <tr>
+            <td><img width="130px" src="https://img0.leboncoin.fr/ad-image/0dd7a13ae01c610610fda19359ae2af177a5dd43.jpg" alt="Apercu"/></td>
+            <td width="10%"><input class="big" type="text" value="316 €"/></td>
+            <td width="10%"><input class="big" type="text" value="16 m2"/></td>
+            <td><input type="text" value="29 Bd Maréchal Foch"/></td>
+            <td><input type="text" value="04 76 86 69 69"/></td>
+            <td class="desc" width="30%">
+                <textarea>ISERE GRENOBLE 29 BOULEVARD MARECHAL FOCH Superbe studio meublé en très bon état avec mezzanine pour couchage, kitchenette équipée, chauffage individuel électrique, ascenseur, digicode, idéal étudiant tram direct Domaine Universitaire, secteur recherché proche toutes commodités
+  Référence annonce : 3254
+  Honoraires : 214 €
+  Dépôt de garantie : 300 €
+  Montant des charges : 16 € / mois</textarea>
+          </td>
+          <td><a href="https://www.leboncoin.fr/locations/1083809380.htm?ca=22_s" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
+
+            </tr>
+
+
+            <tr>
+              <td><img width="130px" src="https://img7.leboncoin.fr/ad-image/115f837dfc5a6da7854c059793d783cf480041b5.jpg" alt="Apercu"/></td>
+              <td width="10%"><input class="big" type="text" value="353 €"/></td>
+              <td width="10%"><input class="big" type="text" value="19 m2"/></td>
+              <td><input type="text" value="4 Ter Rue Ponsard"/></td>
+              <td><input type="text" value="04 76 47 35 00"/></td>
+              <td class="desc" width="30%">
+                <textarea>STUDIO 4 TER RUE PONSARD 38100 GRENOBLE (STUDIO 24)
+
+                4 Ter Rue Ponsard - Proximité MOUNIER - IUFM - Studio meublé - 2 ème étage - chauffage électrique - eau froide collective - double vitrage - digicode - disponible le 20/02/2017 - frais état des lieux 44.50euro - Loyer 330euro + 23 euroCharges - Honos 198.30euro NAHMIAS IMMOBILIER 04 76 473 500
+                Référence annonce : 4_TER_RUE_PONSARD
+                Honoraires : 198 €
+                Dépôt de garantie : 660 €</textarea>
+            </td>
+            <td><a href="https://www.leboncoin.fr/locations/1089095462.htm?ca=22_s" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
+
+              </tr>
+            -->
+
+
+      </table>
+
+    </div>
+
+    <div id="links">
+      <a data-toggle="modal" data-target=".modal" class="btn btn-info btn-lg" target="_blank" style="margin-right: 2em;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> AJOUTER</a>
+      <a href="" class="btn btn-warning btn-lg" target="_blank"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> PARTAGER</a>
+
+      <pre style="position:absolute;top:0;width:100%;left:0;opacity:0.8;overflow:scroll;">
+        {{result}}
+      </pre>
+
+
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Ajouter une annonce</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning">Seules les annonces du site Le Bon Coin sont pour l'instant autorisées</div>
+            <input ng-model="link" style="font-size: 150%" type="text" placeholder="Lien vers annonce du bon coin"/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            <button ng-click="sendLink()" type="button" class="btn btn-info">Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>

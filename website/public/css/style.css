@@ -1,0 +1,72 @@
+html,body{width:100%; height:100%; margin:0; padding:0;}
+body{
+  padding-top: 4%;
+  background: url('../img/bg.jpg');
+  background-size: cover;
+}
+h1{
+  text-align: center;
+  color: white;
+}
+h3{
+  font-size:110%;
+  text-align: center;
+  color: white;
+  margin-bottom: 2.5em;
+}
+#author{
+  font-weight: bold;
+}
+#brand{
+  color:white;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 110%;
+}
+
+#table{
+  padding: 1em;
+  background: #fff;
+  width: 80%; margin: auto;
+  min-height: 200px;
+  max-height: 450px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  margin-bottom: 2em;
+  overflow: scroll;
+}
+.big{
+  font-size:130%;
+}
+#links{
+  width: 40%; margin: auto;
+  text-align: center;
+}
+.desc{
+  font-size: 80%;
+}
+.desc textarea{
+  width: 100%; min-height: 150px;
+  border: none; background: none;
+  border-left: 1px solid #ccc;
+  padding-left: 1em;
+  color: #666;
+}
+.desc textarea:focus{
+  border-left: 1px solid #2196F3;
+  color: black;
+}
+input{
+  width:100%;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: none;
+  color: #666;
+}
+input:focus{
+  border-bottom: 1px solid #2196F3;
+  color: black;
+}
+*:focus {
+  outline: none;
+}
