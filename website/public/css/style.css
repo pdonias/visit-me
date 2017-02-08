@@ -1,9 +1,24 @@
 html,body{width:100%; height:100%; margin:0; padding:0;}
 body{
-  padding-top: 4%;
+  padding-top: 3%;
   background: url('../img/bg.jpg');
   background-size: cover;
 }
+
+input {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: none;
+  color: #666;
+}
+input:focus{
+  border-bottom: 1px solid #2196F3;
+  color: black;
+}
+*:focus {
+  outline: none;
+}
+
 h1{
   text-align: center;
   color: white;
@@ -14,6 +29,28 @@ h3{
   color: white;
   margin-bottom: 2.5em;
 }
+
+input#email{
+  color: white;
+  text-align: center;
+  width: 300px;
+}
+input#email:focus{
+  color: white;
+}
+input#email::-webkit-input-placeholder {
+   color: rgba(255,255,255,0.6);
+}
+input#email:-moz-placeholder { /* Firefox 18- */
+   color: rgba(255,255,255,0.6);
+}
+input#email::-moz-placeholder {  /* Firefox 19+ */
+   color: rgba(255,255,255,0.6);
+}
+input#email:-ms-input-placeholder {
+   color: rgba(255,255,255,0.6);
+}
+
 #author{
   font-weight: bold;
 }
@@ -32,9 +69,17 @@ h3{
   max-height: 450px;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
   border-radius: 5px;
-  margin-bottom: 2em;
+  margin-bottom: 0.3em;
   overflow: scroll;
 }
+#bottom-table{
+  width: 80%; margin: auto;
+  margin-bottom: 1.7em;
+  color:white;
+  font-size: 80%;
+}
+
+
 .big{
   font-size:130%;
 }
@@ -56,17 +101,8 @@ h3{
   border-left: 1px solid #2196F3;
   color: black;
 }
-input{
+
+#table input{
   width:100%;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  background: none;
-  color: #666;
-}
-input:focus{
-  border-bottom: 1px solid #2196F3;
-  color: black;
-}
-*:focus {
-  outline: none;
+
 }

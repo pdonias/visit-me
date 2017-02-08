@@ -1,8 +1,10 @@
 var mongoose = require('mongoose');
 
 var ListSchema = new mongoose.Schema({
-  key : String,
-  list: String, // should be MIXED
+  title: String,
+  email: String,
+  //list : String,
+  lastsave : String
 });
 
 module.exports = mongoose.model('List', ListSchema);

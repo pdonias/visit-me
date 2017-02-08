@@ -1,15 +1,38 @@
-var express       = require('express');
-var request = require('request');
-var cheerio = require('cheerio');
-
+var express  = require('express');
+var request  = require('request');
+var cheerio  = require('cheerio');
 var mongoose = require('mongoose');
 
 var List = require('../models/List.js');
-var FlatEntry = require('../models/FlatEntry.js');
 
 // bundle our routes
 var apiRoutes = express.Router();
 
+/*
+
+  POST /api/list
+In order to create or update a list
+
+*/
+apiRoutes.post('/list', function(req,res){
+
+  // We're looking for an already existing list with email
+  var query = {'email':req.body.email};
+
+  // If we find one, we update, otherwise we create
+  List.findOneAndUpdate(query, req.body, {upsert:true}, function(err, doc){
+      if (err) return res.send(500, { error: err });
+      return res.send("succesfully saved");
+  });
+
+});
+
+/*
+
+  POST /api/annonce
+In order to parse an annonce
+
+*/
 apiRoutes.post('/annonce', function(req, res){
 
   url =  req.body.link; // 'https://www.leboncoin.fr/locations/1073612460.htm?ca=22_s';
@@ -77,13 +100,6 @@ apiRoutes.post('/annonce', function(req, res){
 
 
       }
-      /*
-      fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
-
-          console.log('File successfully written! - Check your project directory for the output.json file');
-
-      })
-      */
 
       // Finally, we'll just send out a message to the browser reminding you that this app does not have a UI.
       res.send(json);
