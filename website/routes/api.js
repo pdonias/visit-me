@@ -50,7 +50,7 @@ In order to parse an annonce
 */
 apiRoutes.post('/annonce', function(req, res){
 
-  url =  req.body.link; // 'https://www.leboncoin.fr/locations/1073612460.htm?ca=22_s';
+  url =  req.body.link;
 
   // The structure of our request call
   // The first parameter is our URL
