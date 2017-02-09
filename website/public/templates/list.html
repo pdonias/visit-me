@@ -5,12 +5,24 @@
       <form name="EmailForm">
         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
         <input required name="email" id="email" ng-pattern="emailFormat" type="text" placeholder="Adresse email" ng-model="data.email" autocomplete="off"/>
-        <span ng-if="!EmailForm.email.$valid"> X</span>
+        <span style="color:yellow" ng-if="!EmailForm.email.$valid"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
     </h3>
 
     <div id="table">
 
-      <table class="table table-striped">
+      <div style="text-align:center;" class="alert alert-info" ng-if="data.list.length == 0">
+
+        <b>Oh non !</b> Vous n'avez pas d'annonce dans cette liste.<br/>
+        Cliquez sur <b>AJOUTER</b> en bas pour en ajouter une !
+
+      </div>
+
+      <div ng-if="data.list.length == 0" style="text-align:center; color: #999; padding-bottom: 2em;">
+        <i style="font-size: 800%; color: red; " class="fa fa-heart" aria-hidden="true"></i><br/>
+        <b>C'est le début d'une histoire d'amour avec <i>Veasit</i></b>
+      </div>
+
+      <table class="table table-striped" ng-if="data.list.length != 0">
         <tr>
           <th>Aperçu</th>
           <th>Prix</th>
