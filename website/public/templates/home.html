@@ -2,8 +2,10 @@
 
     <h1>{{data.title}}</h1>
     <h3>
-      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-      <input id="email" type="text" placeholder="Adresse email" ng-model="data.email"/>
+      <form name="EmailForm">
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        <input required name="email" id="email" ng-pattern="emailFormat" type="text" placeholder="Adresse email" ng-model="data.email" autocomplete="off"/>
+        <span ng-if="!EmailForm.email.$valid"> X</span>
     </h3>
 
     <div id="table">
@@ -37,10 +39,11 @@
 
     </div>
     <div id="bottom-table">
-      <a class="btn btn-info btn-xs" ng-click="save()">
+      <a class="btn btn-info btn-xs" ng-click="save()" ng-disabled="!EmailForm.email.$valid">
         <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Sauvegarder
       </a>
-      <b ng-if="unsaved_changes" style="color:orange;">Modifications non sauvegardées !</b>
+      <b ng-if="!EmailForm.email.$valid" style="color:orange;">Renseigner une adresse email pour sauvegarder. </b>
+      <b ng-if="unsaved_changes" style="color:red;">Modifications non sauvegardées !</b>
       Dernière sauvegarde le <i>{{data.lastsave}}</i>
     </div>
 

@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var ListSchema = new mongoose.Schema({
   title: String,
   email: String,
-  //list : String,
+  list : Object,
   lastsave : String
 });
 

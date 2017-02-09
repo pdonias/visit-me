@@ -3,6 +3,8 @@ angular.module('veasit.controllers', [])
 
 .controller('HomeController', function($scope, $http) {
 
+  $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
+
   $scope.annonces = [{
       img:"https://img3.leboncoin.fr/ad-image/f04f4d65abfefed52b3a297e3256361529ef9087.jpg",
       price:"340 €",
@@ -41,8 +43,8 @@ angular.module('veasit.controllers', [])
   $scope.data = {
     "title" : "Studio < 350€/mois @Grenoble",
     "email" : "",
-    //"list" : $scope.annonces,
-    "lastsave" : "8 Février 16:02"
+    "list" : $scope.annonces,
+    "lastsave" : ""
   };
 
   // By default, there are no unsaved changes
@@ -54,6 +56,8 @@ angular.module('veasit.controllers', [])
   // When he clicks save, the changes are saved to the DB
   $scope.save = function() {
     if ($scope.data.email != ""){
+      $scope.data.lastsave = new Date();
+
       // send to DB
       console.log($scope.data);
       $http.post('http://localhost:3000/api/list', $scope.data).then(function(result) {
