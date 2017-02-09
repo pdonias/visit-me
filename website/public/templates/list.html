@@ -17,21 +17,33 @@
           <th>Superficie</th>
           <th>Adresse</th>
           <th>Contact</th>
+          <th>État</th>
           <th>Description | Notes</th>
           <th></th>
-          <th><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></th>
+          <th></th>
         </tr>
 
         <tr ng-repeat="a in data.list.slice().reverse()">
 
           <td><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
-          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.price"></td>
-          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.superf"></td>
-          <td><input type="text" ng-change="changed()" ng-model="a.address"></td>
-          <td><input type="text" ng-change="changed()" ng-model="a.contact"></td>
-          <td class="desc" width="30%">
-            <textarea>{{$index}} {{a.desc}}</textarea>
+          <td width="7%"><input class="big" type="text" ng-change="changed()" ng-model="a.price"></td>
+          <td width="7%"><input class="big" type="text" ng-change="changed()" ng-model="a.superf"></td>
+          <td width="13%"><input type="text" ng-change="changed()" ng-model="a.address"></td>
+          <td width="13%"><input type="text" ng-change="changed()" ng-model="a.contact"></td>
+          <td class="state" width="13%">
+            <select ng-change="changed()" ng-model="a.state">
+                <option value="not-contacted">Pas contacté</option>
+                <option value="message">Message laissé</option>
+                <option value="visit-planned">Rendez-vous fixé</option>
+                <option value="visited">Visité</option>
+              </select>
+              <textarea ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
           </td>
+          <td class="desc" width="30%">
+            <textarea ng-model="a.desc"></textarea>
+          </td>
+
+
           <td data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce">
             <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true" ng-click="delete($index)"></span>
           </td>

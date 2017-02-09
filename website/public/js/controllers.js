@@ -29,7 +29,6 @@ angular.module('veasit.controllers', [])
       $scope.data.lastsave = new Date();
 
       // send to DB
-      console.log($scope.data);
       $http.post('http://localhost:3000/api/list', $scope.data).then(function(result) {
         alert("Liste sauvegardée");
       });
