@@ -1,7 +1,7 @@
 angular.module('veasit.controllers', [])
 
 
-.controller('ListController', function($scope, $http) {
+.controller('ListController', function($scope, $http, $location) {
 
   $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
 
@@ -33,6 +33,10 @@ angular.module('veasit.controllers', [])
       alert("Pour sauvegarder, veuillez entrer une adresse email");
     }
 
+  };
+
+  $scope.share = function() {
+    alert("Partagez cette adresse :\n"+$location.$$absUrl);
   };
 
 
