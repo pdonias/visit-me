@@ -27,6 +27,15 @@ apiRoutes.post('/list', function(req,res){
 
 });
 
+apiRoutes.get('/list/:id', function(req,res){
+
+  List.findOne({"_id": req.params.id},function (err, list) {
+    if (err) return next(err);
+    res.json(list);
+  });
+
+});
+
 /*
 
   POST /api/annonce
