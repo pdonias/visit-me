@@ -64,4 +64,20 @@ angular.module('veasit.controllers', [])
     });
   };
 
+})
+
+
+
+.controller('HomeController', function($scope, $http, $window) {
+
+  // Add a list to the database and get its key
+  $scope.createList = function() {
+
+    $http.get('http://localhost:3000/api/list/create').then(function(result) {
+
+      $window.location.href = '/list/'+result.data;
+
+    });
+  };
+
 });
