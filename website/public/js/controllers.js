@@ -68,7 +68,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
 
 
-.controller('HomeController', function($scope, $http, $window) {
+.controller('HomeController', function($scope, $http, $window, API_ENDPOINT) {
 
   // Add a list to the database and get its key
   $scope.createList = function() {
