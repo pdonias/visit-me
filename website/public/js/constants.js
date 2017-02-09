@@ -5,5 +5,5 @@ angular.module('veasit.constants', [])
 })
 
 .constant('API_ENDPOINT', {
-  url: 'https://veasit.herokuapp.com/api'
+  url: 'http://localhost:3000/api' // local
 });

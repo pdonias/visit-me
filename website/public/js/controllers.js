@@ -1,13 +1,13 @@
-angular.module('veasit.controllers', [])
+angular.module('veasit.controllers', ['veasit.constants'])
 
 
-.controller('ListController', function($scope, $http, $location) {
+.controller('ListController', function($scope, $http, $location, API_ENDPOINT) {
 
   $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
 
   $scope.data = {
     title: '',
-    list: [{price:'test'}],
+    list: [],
     lastsave: ''
   };
 
@@ -27,7 +27,7 @@ angular.module('veasit.controllers', [])
   $scope.save = function() {
     if ($scope.data.email != ""){
       // send to DB
-      $http.post('http://localhost:3000/api/list', $scope.data).then(function(result) {
+      $http.post(API_ENDPOINT.url + '/list', $scope.data).then(function(result) {
         alert("Liste sauvegardée");
         //console.log(result);
         $scope.data.lastsave = result.data;
@@ -56,7 +56,7 @@ angular.module('veasit.controllers', [])
 
   $scope.sendLink = function() {
     // POST request to the back end, with the link
-    $http.post('http://localhost:3000/api/annonce', {"link": $scope.link}).then(function(result) {
+    $http.post(API_ENDPOINT.url + '/annonce', {"link": $scope.link}).then(function(result) {
       // Add the result to the array
       $scope.data.list.push(result.data);
       // Apply to update the view

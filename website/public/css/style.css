@@ -37,9 +37,13 @@ h1{
 }
 input#title{
   border: none;
+  width: 90%;
   color: white;
-  text-align:center;
-  margin-top: 1.3em;
+  text-align: center;
+  margin-top: 0.7em;
+}
+input#title:focus{
+  color: white;
 }
 input#title::-webkit-input-placeholder {
    color: rgba(255,255,255,0.6);
@@ -53,7 +57,6 @@ input#title::-moz-placeholder {  /* Firefox 19+ */
 input#title:-ms-input-placeholder {
    color: rgba(255,255,255,0.6);
 }
-
 
 h3{
   font-size:110%;
