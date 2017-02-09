@@ -26,12 +26,11 @@ angular.module('veasit.controllers', [])
   // When he clicks save, the changes are saved to the DB
   $scope.save = function() {
     if ($scope.data.email != ""){
-      $scope.data.lastsave = new Date();
-
       // send to DB
-      console.log($scope.data);
       $http.post('http://localhost:3000/api/list', $scope.data).then(function(result) {
         alert("Liste sauvegardée");
+        //console.log(result);
+        $scope.data.lastsave = result.data;
       });
 
       $scope.unsaved_changes = false;

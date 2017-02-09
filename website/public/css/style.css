@@ -4,6 +4,19 @@ body{
   background: url('../img/bg.jpg');
   background-size: cover;
 }
+#header{
+  height: 30px;
+  position:absolute;
+  top: 0;
+  width:100%;
+  background-color: rgba(255,255,255,0.2);
+  text-align: right;
+  padding : 0.3em;
+  padding-right: 5%;
+}
+#header a{
+  color: white;
+}
 
 input {
   border: none;
@@ -71,7 +84,7 @@ input#email:-ms-input-placeholder {
 #table{
   padding: 1em;
   background: #fff;
-  width: 80%; margin: auto;
+  width: 90%; margin: auto;
   min-height: 200px;
   max-height: 450px;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -80,7 +93,7 @@ input#email:-ms-input-placeholder {
   overflow: scroll;
 }
 #bottom-table{
-  width: 80%; margin: auto;
+  width: 90%; margin: auto;
   margin-bottom: 1.7em;
   color:white;
   font-size: 80%;
@@ -107,6 +120,23 @@ input#email:-ms-input-placeholder {
 .desc textarea:focus{
   border-left: 1px solid #2196F3;
   color: black;
+}
+
+.state textarea{
+  font-size: 80%;
+  width: 100%; min-height: 100px;
+  border: none; background: none;
+  border-left: 1px solid #ccc;
+  padding-left: 1em;
+  color: #666;
+}
+.state textarea:focus{
+  border-left: 1px solid #2196F3;
+  color: black;
+}
+
+.state select{
+  margin-bottom: 1em;
 }
 
 #table input{

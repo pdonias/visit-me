@@ -2,6 +2,7 @@ var express  = require('express');
 var request  = require('request');
 var cheerio  = require('cheerio');
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var iconv = require('iconv-lite');
 
@@ -22,10 +23,12 @@ apiRoutes.post('/list', function(req,res){
   //console.log(req.body);
   var query = {'_id':req.body._id};
 
+  req.body.lastsave = moment().lang("fr").format('LLLL');
+
   // If we find one, we update, otherwise we create
   List.findOneAndUpdate(query, req.body, {upsert:true}, function(err, doc){
       if (err) return res.send(500, { error: err });
-      return res.send("succesfully saved");
+      return res.send(req.body.lastsave);
   });
 
 });
