@@ -1,4 +1,8 @@
-
+<div id="header">
+  <a href="https://www.facebook.com/Veasit-710336875792835/?fref=ts" target="_blank">
+    <i class="fa fa-facebook" aria-hidden="true"></i>
+  </a>
+</div>
 
     <h1>{{data.title}}</h1>
     <h3>
@@ -88,7 +92,7 @@
           </div>
           <div class="modal-body">
             <div class="alert alert-warning">Seules les annonces du site Le Bon Coin sont pour l'instant autorisées</div>
-            <input ng-model="link" style="font-size: 150%" type="text" placeholder="Lien vers annonce du bon coin"/>
+            <input ng-model="link" style="font-size: 150%;width: 100%" type="text" placeholder="Lien vers annonce du bon coin"/>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
@@ -99,12 +103,14 @@
     </div>
 
 
+    <!--
     <pre style="margin-top:4em;float:left;width:45%">
       {{data.list}}
     </pre>
     <pre style="width:45%;float:right;margin-top:4em">
       {{annonces_copy}}
     </pre>
+    -->
 
     <script>
     $('#myModal').on('shown.bs.modal', function () {
