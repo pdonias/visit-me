@@ -3,6 +3,8 @@ var request  = require('request');
 var cheerio  = require('cheerio');
 var mongoose = require('mongoose');
 
+var iconv = require('iconv-lite');
+
 var List = require('../models/List.js');
 
 // bundle our routes
@@ -50,7 +52,10 @@ apiRoutes.post('/annonce', function(req, res){
   // The first parameter is our URL
   // The callback function takes 3 parameters, an error, response status code and the html
 
-  request(url, function(error, response, html){
+  request.get({
+    uri: url,
+    encoding: null
+  }, function(error, response, html){
 
       // First we'll check to make sure no errors occurred when making the request
       var json = { title : url, price : "", desc : "", img : "", superf : "",
@@ -59,7 +64,7 @@ apiRoutes.post('/annonce', function(req, res){
       if(!error){
           // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
 
-          var $ = cheerio.load(html);
+          var $ = cheerio.load(iconv.decode(html, 'iso-8859-1'));
 
           // Finally, we'll define the variables we're going to capture
 
