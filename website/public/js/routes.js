@@ -6,6 +6,10 @@ angular.module('veasit.routes', ['ngRoute'])
         .when('/', {
             templateUrl: 'templates/home.html',
             controller: 'HomeController'
+        })
+        .when('/list/:id', {
+            templateUrl: 'templates/list.html',
+            controller: 'ListController'
         });
 
     $locationProvider.html5Mode(true);

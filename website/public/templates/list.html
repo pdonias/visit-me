@@ -1,0 +1,94 @@
+
+
+    <h1>{{data.title}}</h1>
+    <h3>
+      <form name="EmailForm">
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        <input required name="email" id="email" ng-pattern="emailFormat" type="text" placeholder="Adresse email" ng-model="data.email" autocomplete="off"/>
+        <span ng-if="!EmailForm.email.$valid"> X</span>
+    </h3>
+
+    <div id="table">
+
+      <table class="table table-striped">
+        <tr>
+          <th>Aperçu</th>
+          <th>Prix</th>
+          <th>Superficie</th>
+          <th>Adresse</th>
+          <th>Contact</th>
+          <th>Description | Notes</th>
+          <th><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></th>
+        </tr>
+
+        <tr ng-repeat="a in data.list.slice().reverse()">
+
+          <td><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
+          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.price"</td>
+          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.superf"</td>
+          <td><input type="text" ng-change="changed()" ng-model="a.address"</td>
+          <td><input type="text" ng-change="changed()" ng-model="a.contact"</td>
+          <td class="desc" width="30%">
+            <textarea>{{a.desc}}</textarea>
+          </td>
+          <td><a href="https://www.leboncoin.fr/locations/1089587013.htm?ca=22_s" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
+
+        </tr>
+
+      </table>
+
+    </div>
+    <div id="bottom-table">
+      <a class="btn btn-info btn-xs" ng-click="save()" ng-disabled="!EmailForm.email.$valid">
+        <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Sauvegarder
+      </a>
+      <b ng-if="!EmailForm.email.$valid" style="color:orange;">Renseigner une adresse email pour sauvegarder. </b>
+      <b ng-if="unsaved_changes" style="color:red;">Modifications non sauvegardées !</b>
+      Dernière sauvegarde le <i>{{data.lastsave}}</i>
+    </div>
+
+    <div id="links">
+      <a data-toggle="modal" data-target=".modal" class="btn btn-info btn-lg" target="_blank" style="margin-right: 2em;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> AJOUTER</a>
+      <a href="" class="btn btn-warning btn-lg" target="_blank"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> PARTAGER</a>
+
+      <!-- for debug purposes
+      <pre style="position:absolute;top:0;width:100%;left:0;opacity:0.8;overflow:scroll;">
+        {{result}}
+      </pre>
+      -->
+
+
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Ajouter une annonce</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning">Seules les annonces du site Le Bon Coin sont pour l'instant autorisées</div>
+            <input ng-model="link" style="font-size: 150%" type="text" placeholder="Lien vers annonce du bon coin"/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            <button ng-click="sendLink()" onclick="$('#myModal').modal('toggle');" type="button" class="btn btn-info">Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <pre style="margin-top:4em;float:left;width:45%">
+      {{annonces}}
+    </pre>
+    <pre style="width:45%;float:right;margin-top:4em">
+      {{annonces_copy}}
+    </pre>
+
+    <script>
+    $('#myModal').on('shown.bs.modal', function () {
+       $('input').focus();
+    });
+    </script>

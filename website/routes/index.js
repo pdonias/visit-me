@@ -6,4 +6,11 @@ router.get('*', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/list/:id', function(req, res, next) {
+  List.find({"_id": req.params.id}, function (err, list) {
+    if (err) return next(err);
+    res.json(list);
+  });
+});
+
 module.exports = router;
