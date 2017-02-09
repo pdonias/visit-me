@@ -18,20 +18,24 @@
           <th>Adresse</th>
           <th>Contact</th>
           <th>Description | Notes</th>
+          <th></th>
           <th><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></th>
         </tr>
 
         <tr ng-repeat="a in data.list.slice().reverse()">
 
           <td><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
-          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.price"</td>
-          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.superf"</td>
-          <td><input type="text" ng-change="changed()" ng-model="a.address"</td>
-          <td><input type="text" ng-change="changed()" ng-model="a.contact"</td>
+          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.price"></td>
+          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.superf"></td>
+          <td><input type="text" ng-change="changed()" ng-model="a.address"></td>
+          <td><input type="text" ng-change="changed()" ng-model="a.contact"></td>
           <td class="desc" width="30%">
-            <textarea>{{a.desc}}</textarea>
+            <textarea>{{$index}} {{a.desc}}</textarea>
           </td>
-          <td><a href="https://www.leboncoin.fr/locations/1089587013.htm?ca=22_s" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
+          <td data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce">
+            <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true" ng-click="delete($index)"></span>
+          </td>
+          <td><a href="{{a.link}}" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
 
         </tr>
 
@@ -84,7 +88,7 @@
 
 
     <pre style="margin-top:4em;float:left;width:45%">
-      {{annonces}}
+      {{data.list}}
     </pre>
     <pre style="width:45%;float:right;margin-top:4em">
       {{annonces_copy}}
