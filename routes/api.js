@@ -23,7 +23,7 @@ apiRoutes.post('/list', function(req,res){
   //console.log(req.body);
   var query = {'_id':req.body._id};
 
-  req.body.lastsave = moment().format('LLLL');
+  req.body.lastsave = moment().locale('fr').format('LLLL');
 
   // If we find one, we update, otherwise we create
   List.findOneAndUpdate(query, req.body, {upsert:true}, function(err, doc){
@@ -35,7 +35,7 @@ apiRoutes.post('/list', function(req,res){
 
 apiRoutes.get('/list/create', function(req,res){
 
-  var ls = moment().format('LLLL');
+  var ls = moment().locale('fr').format('LLLL');
   List.create({ lastsave: ls, list: [] }, function (err, small) {
     if (err) return handleError(err);
     // saved!
