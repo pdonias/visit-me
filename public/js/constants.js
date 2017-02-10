@@ -5,6 +5,6 @@ angular.module('veasit.constants', [])
 })
 
 .constant('API_ENDPOINT', {
-  //url: 'http://localhost:3000/api' // local
-  url: 'https://veasit.herokuapp.com/api' // remote
+  url: 'http://localhost:3000/api' // local
+  //url: 'https://veasit.herokuapp.com/api' // remote
 });
