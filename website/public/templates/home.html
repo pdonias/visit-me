@@ -1,91 +1,40 @@
+<div id="black">
+</div>
 
 
-    <h1>{{data.title}}</h1>
-    <h3>
-      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-      <input id="email" type="text" placeholder="Adresse email" ng-model="data.email"/>
-    </h3>
 
-    <div id="table">
+<div id="homepage">
+  <h1>Bienvenue sur Veasit</h1>
+<h3>Le meilleur moyen d'organiser vos recherches de logement</h3>
+<br/>
+Vous utilisez actuellement une version beta de l'application <i style="font-size:80%">(chanceux!)</i><br/>
+Si vous repèrez le moindre bug, n'hésitez pas à me contacter !<br/>
+<u>laurent.fite(at)gmail.com</u>
+<br/><br/>
+En attendant vous pouvez essayer Veasit en créant une liste<br/><br/>
 
-      <table class="table table-striped">
-        <tr>
-          <th>Aperçu</th>
-          <th>Prix</th>
-          <th>Superficie</th>
-          <th>Adresse</th>
-          <th>Contact</th>
-          <th>Description | Notes</th>
-          <th><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></th>
-        </tr>
+<a href="#" ng-click="createList()" class="btn btn-lg btn-warning">Créer une liste</a>
 
-        <tr ng-repeat="a in annonces.slice().reverse()">
-
-          <td><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
-          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.price"</td>
-          <td width="10%"><input class="big" type="text" ng-change="changed()" ng-model="a.superf"</td>
-          <td><input type="text" ng-change="changed()" ng-model="a.address"</td>
-          <td><input type="text" ng-change="changed()" ng-model="a.contact"</td>
-          <td class="desc" width="30%">
-            <textarea>{{a.desc}}</textarea>
-          </td>
-          <td><a href="https://www.leboncoin.fr/locations/1089587013.htm?ca=22_s" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
-
-        </tr>
-
-      </table>
-
-    </div>
-    <div id="bottom-table">
-      <a class="btn btn-info btn-xs" ng-click="save()">
-        <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Sauvegarder
-      </a>
-      <b ng-if="unsaved_changes" style="color:orange;">Modifications non sauvegardées !</b>
-      Dernière sauvegarde le <i>{{data.lastsave}}</i>
-    </div>
-
-    <div id="links">
-      <a data-toggle="modal" data-target=".modal" class="btn btn-info btn-lg" target="_blank" style="margin-right: 2em;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> AJOUTER</a>
-      <a href="" class="btn btn-warning btn-lg" target="_blank"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> PARTAGER</a>
-
-      <!-- for debug purposes
-      <pre style="position:absolute;top:0;width:100%;left:0;opacity:0.8;overflow:scroll;">
-        {{result}}
-      </pre>
-      -->
-
-
-    </div>
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Ajouter une annonce</h4>
-          </div>
-          <div class="modal-body">
-            <div class="alert alert-warning">Seules les annonces du site Le Bon Coin sont pour l'instant autorisées</div>
-            <input ng-model="link" style="font-size: 150%" type="text" placeholder="Lien vers annonce du bon coin"/>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-            <button ng-click="sendLink()" onclick="$('#myModal').modal('toggle');" type="button" class="btn btn-info">Ajouter</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <pre style="margin-top:4em;float:left;width:45%">
-      {{annonces}}
-    </pre>
-    <pre style="width:45%;float:right;margin-top:4em">
-      {{annonces_copy}}
-    </pre>
-
-    <script>
-    $('#myModal').on('shown.bs.modal', function () {
-       $('input').focus();
-    });
-    </script>
+<br/><br/>
+<div class="row" style="width: 80%; margin: auto; padding:3em">
+  <div class="col-md-4">
+    <b>À quoi ça sert ?</b>
+    <p>Grâce à Veasit, toutes les annonces de logement qui vous intéressent se retrouvent
+      au même endroit.<br/>
+      De cette manière, vous êtes plus organisés et vous gagnez du temps ;)
+  </div>
+  <div class="col-md-4">
+    <b>Comment ça marche ?</b>
+    <p>Il vous suffit de créer une liste, et de rajouter des annonces dans l'outil.<br/>
+      Veasit va analyser l'annonce et vous résumer toutes les informations importantes (comme par
+      exemple l'adresse, si elle est écrite dans la description).
+  </div>
+  <div class="col-md-4">
+    <b>Où ça en est ?</b>
+    <p>Nous sommes deux développeurs à travailler sur ce projet. Pour l'instant
+      seules les annonces du bon coin peuvent être rentrées dans l'outil mais nous
+      avons plein d'idées en réserve pour faire de votre recherche de logement
+      une partie de plaisir ! ;)</p>
+  </div>
+</div>
+</div>

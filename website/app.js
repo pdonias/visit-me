@@ -2,23 +2,24 @@ var path          = require('path');
 var morgan        = require('morgan');
 var bodyParser    = require('body-parser');
 var cookieParser  = require('cookie-parser');
+var fs            = require('fs'); // ???
+var request       = require('request');
+var cheerio       = require('cheerio');
 
-var express = require('express');
-var fs = require('fs');
-var request = require('request');
-var cheerio = require('cheerio');
-var app     = express();
+var express       = require('express');
 
-var api      = require('./routes/api');
+var app           = express();
+
+/* routes */
+var api           = require('./routes/api');
 var routes        = require('./routes/index');
 
-
+/* config */
 var config        = require('./config/database'); // get db config file
 
-
-var FlatEntry     = require('./models/FlatEntry'); // get the mongoose model
+/* mongoose models */
+var FlatEntry     = require('./models/FlatEntry');
 var List          = require('./models/List');
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,12 +37,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(morgan('dev'));
 
-
-
+/* routes */
 app.use('/api', api);
 app.use('*', routes);
-
-
 
 // error handlers
 
@@ -77,10 +75,6 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.database)
 .then(() =>  console.log('connection succesful'))
 .catch((err) => console.error(err));
-
-
-
-
 
 
 // catch 404 and forward to error handler
