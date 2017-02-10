@@ -56,9 +56,12 @@ angular.module('veasit.controllers', ['veasit.constants'])
     $scope.progressbar = ngProgressFactory.createInstance();
     //$scope.progressbar.setColor('white');
     $scope.progressbar.start();
+    $scope.loading = true;
+
     // POST request to the back end, with the link
     $http.post(API_ENDPOINT.url + '/annonce', {"link": $scope.link}).then(function(result) {
       $scope.progressbar.complete();
+      $scope.loading = false;
 
       // Add the result to the array
       $scope.data.list.push(result.data);
