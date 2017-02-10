@@ -71,10 +71,35 @@
         <tr ng-if="loading" style="opacity:0.5; filter:blur(1px);">
           <td><img src="http://placehold.it/130x90"></td>
           <td><img src="../img/loading.gif" width="30px"/></td>
+<<<<<<< HEAD
 
           <td class="desc" width="30%">
             <textarea placeholder="Loading..."></textarea>
           </td>
+=======
+          <td><img src="../img/loading.gif" width="30px"/></td>
+          <td><img src="../img/loading.gif" width="30px"/></td>
+          <td><img src="../img/loading.gif" width="30px"/></td>
+          <td class="state" width="13%">
+            <select ng-change="changed()" ng-model="a.state">
+                <option value="not-contacted">Pas contacté</option>
+                <option value="message">Message laissé</option>
+                <option value="visit-planned">Rendez-vous fixé</option>
+                <option value="visited">Visité</option>
+              </select>
+              <textarea ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
+          </td>
+          <td class="desc" width="30%">
+            <textarea placeholder="Loading..."></textarea>
+          </td>
+          <td style="opacity:0.5">
+            <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true"></span>
+          </td>
+          <td style="opacity:0.5"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></td>
+        </tr>
+
+        <tr ng-repeat="a in data.list.slice().reverse()">
+>>>>>>> Loading UX looks better; Changed date to french using moment.locale(fr) (#14)
 
           <td class="state" width="13%">
             <select ng-change="changed()" ng-model="a.state">
