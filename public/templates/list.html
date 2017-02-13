@@ -71,9 +71,11 @@
         <tr ng-if="loading" style="opacity:0.5; filter:blur(1px);">
           <td><img src="http://placehold.it/130x90"></td>
           <td><img src="../img/loading.gif" width="30px"/></td>
+
           <td class="desc" width="30%">
             <textarea placeholder="Loading..."></textarea>
           </td>
+
           <td class="state" width="13%">
             <select ng-change="changed()" ng-model="a.state">
                 <option checked value="not-contacted">Pas contacté</option>
