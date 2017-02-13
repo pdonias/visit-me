@@ -1,12 +1,47 @@
+  <div id="header">
+    <div class="row">
+      <div class="col-md-3">
+        <form name="EmailForm">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">@</span>
+            <input required name="email" ng-pattern="emailFormat" type="text" ng-model="data.email" autocomplete="off" class="form-control" placeholder="Votre adresse email" aria-describedby="basic-addon1">
+          </div>
+        </form>
+      </div>
+
+      <div class="col-md-6" id="brand">
+        veasit
+      </div>
+
+      <div class="col-md-3">
+
+        Dernière sauvegarde le<br/>
+        <i ng-if="!saving">{{data.lastsave}}</i>
+        <span ng-if="saving" class="label label-success">Success</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="add">
+
+    <div class="input-group">
+      <input type="text" class="form-control" ng-model="link" placeholder="Lien vers une annonce du bon coin. Exemple : https://www.leboncoin.fr/locations/1000000001.htm?ca=22_s">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="sendLink()">Ajouter</button>
+      </span>
+    </div>
+
+  </div>
 
 
-    <h1><input id="title" type="text" ng-model="data.title" placeholder="Un super titre pour une super liste"/></h1>
-    <h3>
-      <form name="EmailForm">
-        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-        <input required name="email" id="email" ng-pattern="emailFormat" type="text" placeholder="Adresse email" ng-model="data.email" autocomplete="off"/>
-        <span style="color:yellow" ng-if="!EmailForm.email.$valid"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
-    </h3>
+  <div id="warning-mail" ng-if="!EmailForm.email.$valid && !unsaved_changes" class="alert alert-warning">
+    <i>Renseigner une adresse email pour activer la <b>sauvegarde automatique des données</b>.</i>
+  </div>
+
+  <div id="warning-mail" ng-if="!EmailForm.email.$valid && unsaved_changes" class="alert alert-danger">
+    <i>Vous avez des données non sauvegardées ! Renseigner une adresse email pour sauvegarder (sinon vous allez tout perdre, ce serait dommage).</i>
+  </div>
+
 
     <div id="table">
 
@@ -25,12 +60,10 @@
       <table class="table table-striped" ng-if="data.list.length != 0">
         <tr>
           <th>Aperçu</th>
-          <th>Prix</th>
-          <th>Superficie</th>
-          <th>Adresse</th>
-          <th>Contact</th>
+          <th>Informations</th>
+          <th>Description</th>
           <th>État</th>
-          <th>Description | Notes</th>
+          <th>Adresse</th>
           <th></th>
           <th></th>
         </tr>
@@ -38,47 +71,54 @@
         <tr ng-if="loading" style="opacity:0.5; filter:blur(1px);">
           <td><img src="http://placehold.it/130x90"></td>
           <td><img src="../img/loading.gif" width="30px"/></td>
-          <td><img src="../img/loading.gif" width="30px"/></td>
-          <td><img src="../img/loading.gif" width="30px"/></td>
-          <td><img src="../img/loading.gif" width="30px"/></td>
+          <td class="desc" width="30%">
+            <textarea placeholder="Loading..."></textarea>
+          </td>
           <td class="state" width="13%">
             <select ng-change="changed()" ng-model="a.state">
-                <option value="not-contacted">Pas contacté</option>
+                <option checked value="not-contacted">Pas contacté</option>
                 <option value="message">Message laissé</option>
                 <option value="visit-planned">Rendez-vous fixé</option>
                 <option value="visited">Visité</option>
               </select>
               <textarea ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
           </td>
-          <td class="desc" width="30%">
-            <textarea placeholder="Loading..."></textarea>
-          </td>
+          <td><img src="../img/loading.gif" width="30px"/></td>
           <td style="opacity:0.5">
             <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true"></span>
           </td>
           <td style="opacity:0.5"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></td>
         </tr>
 
-        <tr ng-repeat="a in data.list.slice().reverse()">
+        <tr class="entry" ng-repeat="a in data.list.slice().reverse()">
 
-          <td><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
-          <td width="7%"><input class="big" type="text" ng-change="changed()" ng-model="a.price"></td>
-          <td width="7%"><input class="big" type="text" ng-change="changed()" ng-model="a.superf"></td>
-          <td width="13%"><input type="text" ng-change="changed()" ng-model="a.address"></td>
-          <td width="13%"><input type="text" ng-change="changed()" ng-model="a.contact"></td>
-          <td class="state" width="13%">
+          <td width="130px"><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
+          <td width="15%">
+            <i class="fa fa-euro" aria-hidden="true"></i>
+            <input class="big" type="text" ng-change="changed()" ng-model="a.price" placeholder="Prix"/><br/>
+
+            <i class="fa fa-expand" aria-hidden="true"></i>
+            <input class="big" type="text" ng-change="changed()" ng-model="a.superf" placeholder="Superficie"/><br/>
+
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            <input class="big" type="text" ng-change="changed()" ng-model="a.contact" placeholder="Contact"/>
+          </td>
+
+          <td class="desc" width="30%">
+            <textarea ng-change="changed()" ng-model="a.desc"></textarea>
+          </td>
+
+          <td class="state" width="20%">
             <select ng-change="changed()" ng-model="a.state">
                 <option value="not-contacted">Pas contacté</option>
                 <option value="message">Message laissé</option>
                 <option value="visit-planned">Rendez-vous fixé</option>
                 <option value="visited">Visité</option>
               </select>
-              <textarea ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
-          </td>
-          <td class="desc" width="30%">
-            <textarea ng-model="a.desc"></textarea>
+              <textarea ng-change="changed()" ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
           </td>
 
+          <td width="20%" class="address"><input type="text" ng-change="changed()" ng-model="a.address"></td>
 
           <td data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce">
             <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true" ng-click="delete($index)"></span>
@@ -90,62 +130,3 @@
       </table>
 
     </div>
-    <div id="bottom-table">
-      <a class="btn btn-info btn-xs" ng-click="save()" ng-disabled="!EmailForm.email.$valid">
-        <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Sauvegarder
-      </a>
-      <b ng-if="!EmailForm.email.$valid" style="color:orange;">Renseigner une adresse email pour sauvegarder. </b>
-      <b ng-if="unsaved_changes" style="color:red;">Modifications non sauvegardées !</b>
-      Dernière sauvegarde le <i>{{data.lastsave}}</i>
-    </div>
-
-    <div id="links">
-      <a data-toggle="modal" data-target=".modal" class="btn btn-info btn-lg" target="_blank" style="margin-right: 2em;"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> AJOUTER</a>
-
-      <a ng-click="share()" class="btn btn-warning btn-lg" target="_blank">
-        <span class="glyphicon glyphicon-share" aria-hidden="true"></span> PARTAGER
-      </a>
-
-      <!-- for debug purposes
-      <pre style="position:absolute;top:0;width:100%;left:0;opacity:0.8;overflow:scroll;">
-        {{result}}
-      </pre>
-      -->
-
-
-    </div>
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Ajouter une annonce</h4>
-          </div>
-          <div class="modal-body">
-            <div class="alert alert-warning">Seules les annonces du site Le Bon Coin sont pour l'instant autorisées</div>
-            <input ng-model="link" style="font-size: 150%;width: 100%" type="text" placeholder="Lien vers annonce du bon coin"/>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-            <button ng-click="sendLink()" onclick="$('#myModal').modal('toggle');" type="button" class="btn btn-info">Ajouter</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!--
-    <pre style="margin-top:4em;float:left;width:45%">
-      {{data.list}}
-    </pre>
-    <pre style="width:45%;float:right;margin-top:4em">
-      {{annonces_copy}}
-    </pre>
-    -->
-
-    <script>
-    $('#myModal').on('shown.bs.modal', function () {
-       $('input').focus();
-    });
-    </script>
