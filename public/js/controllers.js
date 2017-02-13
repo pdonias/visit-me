@@ -56,6 +56,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
   // Add a link to the table
 
   $scope.sendLink = function() {
+    $scope.adding = true;
     $scope.progressbar = ngProgressFactory.createInstance();
     //$scope.progressbar.setColor('white');
     $scope.progressbar.start();
@@ -72,6 +73,8 @@ angular.module('veasit.controllers', ['veasit.constants'])
       //$scope.$apply();
       $scope.link = '';
       $scope.unsaved_changes = true;
+      $scope.adding = false;
+
       if ($scope.data.email != null) $scope.save();
     });
 
