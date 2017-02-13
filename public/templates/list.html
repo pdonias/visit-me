@@ -25,7 +25,7 @@
   <div id="add">
 
     <div class="input-group">
-      <input type="text" class="form-control" ng-model="link" placeholder="Lien vers une annonce du bon coin. Exemple : https://www.leboncoin.fr/locations/1000000001.htm?ca=22_s">
+      <input ng-disabled="adding" type="text" class="form-control" ng-model="link" placeholder="Lien vers une annonce du bon coin. Exemple : https://www.leboncoin.fr/locations/1000000001.htm?ca=22_s">
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" ng-click="sendLink()">Ajouter</button>
       </span>
