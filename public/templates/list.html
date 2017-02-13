@@ -72,6 +72,7 @@
           <td><img src="http://placehold.it/130x90"></td>
           <td><img src="../img/loading.gif" width="30px"/></td>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
           <td class="desc" width="30%">
             <textarea placeholder="Loading..."></textarea>
@@ -80,27 +81,11 @@
           <td><img src="../img/loading.gif" width="30px"/></td>
           <td><img src="../img/loading.gif" width="30px"/></td>
           <td><img src="../img/loading.gif" width="30px"/></td>
-          <td class="state" width="13%">
-            <select ng-change="changed()" ng-model="a.state">
-                <option value="not-contacted">Pas contacté</option>
-                <option value="message">Message laissé</option>
-                <option value="visit-planned">Rendez-vous fixé</option>
-                <option value="visited">Visité</option>
-              </select>
-              <textarea ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
-          </td>
+=======
           <td class="desc" width="30%">
             <textarea placeholder="Loading..."></textarea>
           </td>
-          <td style="opacity:0.5">
-            <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true"></span>
-          </td>
-          <td style="opacity:0.5"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></td>
-        </tr>
-
-        <tr ng-repeat="a in data.list.slice().reverse()">
->>>>>>> Loading UX looks better; Changed date to french using moment.locale(fr) (#14)
-
+>>>>>>> New interface + autosave (#16)
           <td class="state" width="13%">
             <select ng-change="changed()" ng-model="a.state">
                 <option checked value="not-contacted">Pas contacté</option>
@@ -108,6 +93,48 @@
                 <option value="visit-planned">Rendez-vous fixé</option>
                 <option value="visited">Visité</option>
               </select>
+              <textarea ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
+          </td>
+          <td><img src="../img/loading.gif" width="30px"/></td>
+          <td style="opacity:0.5">
+            <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true"></span>
+          </td>
+          <td style="opacity:0.5"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></td>
+        </tr>
+
+<<<<<<< HEAD
+        <tr ng-repeat="a in data.list.slice().reverse()">
+>>>>>>> Loading UX looks better; Changed date to french using moment.locale(fr) (#14)
+
+          <td class="state" width="13%">
+=======
+        <tr class="entry" ng-repeat="a in data.list.slice().reverse()">
+
+          <td width="130px"><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
+          <td width="15%">
+            <i class="fa fa-euro" aria-hidden="true"></i>
+            <input class="big" type="text" ng-change="changed()" ng-model="a.price" placeholder="Prix"/><br/>
+
+            <i class="fa fa-expand" aria-hidden="true"></i>
+            <input class="big" type="text" ng-change="changed()" ng-model="a.superf" placeholder="Superficie"/><br/>
+
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            <input class="big" type="text" ng-change="changed()" ng-model="a.contact" placeholder="Contact"/>
+          </td>
+
+          <td class="desc" width="30%">
+            <textarea ng-change="changed()" ng-model="a.desc"></textarea>
+          </td>
+
+          <td class="state" width="20%">
+>>>>>>> New interface + autosave (#16)
+            <select ng-change="changed()" ng-model="a.state">
+                <option checked value="not-contacted">Pas contacté</option>
+                <option value="message">Message laissé</option>
+                <option value="visit-planned">Rendez-vous fixé</option>
+                <option value="visited">Visité</option>
+              </select>
+<<<<<<< HEAD
               <textarea ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
           </td>
           <td><img src="../img/loading.gif" width="30px"/></td>
@@ -142,6 +169,8 @@
                 <option value="visit-planned">Rendez-vous fixé</option>
                 <option value="visited">Visité</option>
               </select>
+=======
+>>>>>>> New interface + autosave (#16)
               <textarea ng-change="changed()" ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
           </td>
 
