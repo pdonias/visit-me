@@ -1,20 +1,55 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@font-face {
+  font-family: 'Jaapokki';
+  src: url('Jaapokki-Regular.otf'); /* IE9 Compat Modes */
+}
+
 html,body{width:100%; height:100%; margin:0; padding:0;}
 body{
   background: url('../img/bg.jpg');
   background-size: cover;
 }
 #header{
-  height: 30px;
-  position:absolute;
-  top: 0;
+  font-family: Roboto;
+  font-weight: 300;
+  color: #999;
+
+  height: 60px;
   width:100%;
-  background-color: rgba(255,255,255,0.2);
+  background-color: white;
   text-align: right;
-  padding : 0.3em;
-  padding-right: 5%;
+  padding : 1% 5%;
+  margin-bottom: 2em;
+  padding-bottom: 4em;
 }
 #header a{
   color: white;
+}
+#header input:focus{
+  border: 2px solid #ccc;
+}
+#add input:focus{
+  border: 2px solid #ccc;
+}
+#brand{
+  font-family: Jaapokki;
+  text-align: center;
+  font-size: 230%;
+  color: black;
+}
+
+
+#add{
+  width: 50%; margin: auto;
+  margin-bottom: 2em;
+}
+
+#warning-mail{
+  width:90%;margin:auto;
+  padding-bottom: 2em;
+  position: relative;
+  top: 1em;
+  z-index: -1;
 }
 
 input {
@@ -31,32 +66,7 @@ input:focus{
   outline: none;
 }
 
-h1{
-  text-align: center;
-  color: white;
-}
-input#title{
-  border: none;
-  width: 90%;
-  color: white;
-  text-align: center;
-  margin-top: 0.7em;
-}
-input#title:focus{
-  color: white;
-}
-input#title::-webkit-input-placeholder {
-   color: rgba(255,255,255,0.6);
-}
-input#title:-moz-placeholder { /* Firefox 18- */
-   color: rgba(255,255,255,0.6);
-}
-input#title::-moz-placeholder {  /* Firefox 19+ */
-   color: rgba(255,255,255,0.6);
-}
-input#title:-ms-input-placeholder {
-   color: rgba(255,255,255,0.6);
-}
+
 
 h3{
   font-size:110%;
@@ -65,26 +75,6 @@ h3{
   margin-bottom: 2.5em;
 }
 
-input#email{
-  color: white;
-  text-align: center;
-  width: 300px;
-}
-input#email:focus{
-  color: white;
-}
-input#email::-webkit-input-placeholder {
-   color: rgba(255,255,255,0.6);
-}
-input#email:-moz-placeholder { /* Firefox 18- */
-   color: rgba(255,255,255,0.6);
-}
-input#email::-moz-placeholder {  /* Firefox 19+ */
-   color: rgba(255,255,255,0.6);
-}
-input#email:-ms-input-placeholder {
-   color: rgba(255,255,255,0.6);
-}
 
 .delete-entry{
   color: red;
@@ -96,19 +86,15 @@ input#email:-ms-input-placeholder {
 #author{
   font-weight: bold;
 }
-#brand{
-  color:white;
-  font-weight: bold;
-  font-style: italic;
-  font-size: 110%;
-}
+
 
 #table{
+  font-family: Roboto;
   padding: 1em;
   background: #fff;
   width: 90%; margin: auto;
   min-height: 200px;
-  max-height: 450px;
+  max-height: 510px;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
   border-radius: 5px;
   margin-bottom: 0.3em;
@@ -121,14 +107,23 @@ input#email:-ms-input-placeholder {
   font-size: 80%;
 }
 
-
+.entry .big{
+  text-align:right;
+}
+.entry .address{
+  text-align:center;
+  color: #666;
+  font-weight: bold;
+}
+.entry .address input{
+  width: 90%;
+  text-align:center;
+}
 .big{
+  width: 80%;
   font-size:130%;
 }
-#links{
-  width: 40%; margin: auto;
-  text-align: center;
-}
+
 .desc{
   font-size: 80%;
 }
@@ -159,9 +154,4 @@ input#email:-ms-input-placeholder {
 
 .state select{
   margin-bottom: 1em;
-}
-
-#table input{
-  width:100%;
-
 }

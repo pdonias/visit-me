@@ -19,11 +19,15 @@ angular.module('veasit.controllers', ['veasit.constants'])
   $scope.unsaved_changes = false;
 
   // If the user changes an input, we trigger
-  $scope.changed = function() { $scope.unsaved_changes = true; };
+  $scope.changed = function() {
+    $scope.unsaved_changes = true;
+    if ($scope.data.email != null) $scope.save();
+  };
 
   // When he clicks save, the changes are saved to the DB
   $scope.save = function() {
-    if ($scope.data.email != ""){
+    if ($scope.data.email != null){
+      $scope.saving = true;
       // send to DB
       $http.post(API_ENDPOINT.url + '/list', $scope.data).then(function(result) {
         //console.log(result);
@@ -31,6 +35,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
       });
 
       $scope.unsaved_changes = false;
+      $scope.saving = false;
     }
     else {
       alert("Pour sauvegarder, veuillez entrer une adresse email");
@@ -38,15 +43,13 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
   };
 
-  $scope.share = function() {
-    alert("Partagez cette adresse :\n"+$location.$$absUrl);
-  };
 
   $scope.delete = function(index){
     // Had to do this because of reverse order in view
     var x = index-($scope.data.list.length-1);
     $scope.data.list.splice(Math.abs(x), 1);
     $scope.unsaved_changes = true;
+    if ($scope.data.email != null) $scope.save();
   }
 
 
@@ -66,9 +69,12 @@ angular.module('veasit.controllers', ['veasit.constants'])
       // Add the result to the array
       $scope.data.list.push(result.data);
       // Apply to update the view
-      $scope.$apply();
+      //$scope.$apply();
+      $scope.link = '';
+      $scope.unsaved_changes = true;
+      if ($scope.data.email != null) $scope.save();
     });
-    $scope.unsaved_changes = true;
+
 
   };
 
