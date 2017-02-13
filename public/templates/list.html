@@ -4,7 +4,7 @@
         <form name="EmailForm">
           <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">@</span>
-            <input required name="email" ng-pattern="emailFormat" type="text" ng-model="data.email" autocomplete="off" class="form-control" placeholder="Votre adresse email" aria-describedby="basic-addon1">
+            <input ng-change="changed()" required name="email" ng-pattern="emailFormat" type="text" ng-model="data.email" autocomplete="off" class="form-control" placeholder="Votre adresse email" aria-describedby="basic-addon1">
           </div>
         </form>
       </div>
