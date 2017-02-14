@@ -110,11 +110,7 @@ apiRoutes.post('/annonce', function(req, res){
           })
 
           // Get address from description
-          json.address = extractAddresses(json.desc)[0];
-          if (json.address != null)
-            json.address = json.address[0];
-          else
-            json.address = "À définir";
+          json.address = extractAddresses(json.desc)[0] || "À définir";
 
           // Get image
           $('div.item_image.big.popin-open.trackable').filter(function(){
