@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "address-extractor": "^0.1.0",
     "angular-ui-router": "^0.3.2",
     "bcrypt": "^0.8.7",
     "body-parser": "~1.15.1",
