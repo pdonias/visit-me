@@ -3,6 +3,7 @@ var request  = require('request');
 var cheerio  = require('cheerio');
 var mongoose = require('mongoose');
 var moment = require('moment');
+var extractAddresses = require('address-extractor');
 
 var iconv = require('iconv-lite');
 
@@ -109,11 +110,7 @@ apiRoutes.post('/annonce', function(req, res){
           })
 
           // Get address from description
-          json.address = json.desc.match(/(([0-9]+ )?([c|C]hemin|[a|A]venue|[r|R]ue|[p|P]lace|[B|b]d|[b|B]vd){1,} ([éèa-zA-Z]+\s)*([éèa-zA-Z]+)[.|,| ])/);
-          if (json.address != null)
-            json.address = json.address[0];
-          else
-            json.address = "À définir";
+          json.address = extractAddresses(json.desc)[0] || "À définir";
 
           // Get image
           $('div.item_image.big.popin-open.trackable').filter(function(){
