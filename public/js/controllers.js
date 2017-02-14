@@ -21,12 +21,13 @@ angular.module('veasit.controllers', ['veasit.constants'])
   // If the user changes an input, we trigger
   $scope.changed = function() {
     $scope.unsaved_changes = true;
-    if ($scope.data.email != null) $scope.save();
+    if ($scope.data.email != null || $scope.data.email != '') $scope.save();
   };
 
   // When he clicks save, the changes are saved to the DB
   $scope.save = function() {
     if ($scope.data.email != null){
+
       $scope.saving = true;
       // send to DB
       $http.post(API_ENDPOINT.url + '/list', $scope.data).then(function(result) {
@@ -36,9 +37,6 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
       $scope.unsaved_changes = false;
       $scope.saving = false;
-    }
-    else {
-      alert("Pour sauvegarder, veuillez entrer une adresse email");
     }
 
   };

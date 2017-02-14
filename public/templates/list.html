@@ -1,10 +1,11 @@
+<div class="background" id="app">
   <div id="header">
     <div class="row">
       <div class="col-md-3">
         <form name="EmailForm">
           <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">@</span>
-            <input required name="email" ng-pattern="emailFormat" type="text" ng-model="data.email" autocomplete="off" class="form-control" placeholder="Votre adresse email" aria-describedby="basic-addon1">
+            <input required ng-change="changed()" name="email" ng-pattern="emailFormat" type="text" ng-model="data.email" autocomplete="off" class="form-control" placeholder="Votre adresse email" aria-describedby="basic-addon1">
           </div>
         </form>
       </div>
@@ -27,7 +28,7 @@
     <div class="input-group">
       <input type="text" class="form-control" ng-model="link" placeholder="Lien vers une annonce du bon coin. Exemple : https://www.leboncoin.fr/locations/1000000001.htm?ca=22_s">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="sendLink()">Ajouter</button>
+        <button class="btn btn-default" type="button" ng-click="sendLink()" ng-disabled="link == null || link.length < 15">Ajouter</button>
       </span>
     </div>
 
@@ -35,7 +36,7 @@
 
 
   <div id="warning-mail" ng-if="!EmailForm.email.$valid && !unsaved_changes" class="alert alert-warning">
-    <i>Renseigner une adresse email pour activer la <b>sauvegarde automatique des données</b>.</i>
+    <i>Renseignez une adresse email pour activer la <b>sauvegarde automatique des données</b>.</i>
   </div>
 
   <div id="warning-mail" ng-if="!EmailForm.email.$valid && unsaved_changes" class="alert alert-danger">
@@ -83,7 +84,7 @@
                 <option value="visit-planned">Rendez-vous fixé</option>
                 <option value="visited">Visité</option>
               </select>
-              <textarea ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
+              <textarea ng-model="a.notes" placeholder="Date de prise de contact. Date du RDV pour la visite. Notes sur l'appartement."></textarea>
           </td>
           <td><img src="../img/loading.gif" width="30px"/></td>
           <td style="opacity:0.5">
@@ -117,7 +118,7 @@
                 <option value="visit-planned">Rendez-vous fixé</option>
                 <option value="visited">Visité</option>
               </select>
-              <textarea ng-change="changed()" ng-model="a.notes" placeholder="Qui a contacté ? Quand ? Date du RDV ? Notes sur l'appartement"></textarea>
+              <textarea ng-change="changed()" ng-model="a.notes" placeholder="Date de prise de contact. Date du RDV pour la visite. Notes sur l'appartement."></textarea>
           </td>
 
           <td width="20%" class="address"><input type="text" ng-change="changed()" ng-model="a.address"></td>
@@ -132,3 +133,4 @@
       </table>
 
     </div>
+</div>
