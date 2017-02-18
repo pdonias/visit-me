@@ -1,26 +1,34 @@
 html,body{width:100%; height:100%; margin:0; padding:0;}
-.background#home{
-  position:absolute;
-  height: 100%;
-  background: url('../img/bg-flat.jpg');
-  background-size: cover;
-  /* z-index: -6; TODO: fix */
-}
-#black{
-  position:absolute;
-  top:0;left:0;
-  background-color: rgba(0,160,250,0.8);
-  width: 100%;
-  height: 100%;
-  z-index: -5;
-}
 
+/* Homepage main (jumbo) */
 #homepage{
   margin-top: 70px;
   text-align:center;
   color:white;
 }
-
-p{
+#homepage p{
   text-align: left;
+}
+#homepage #catchphrase{
+  font-family: Jaapokki;
+}
+#homepage #underline{
+  text-align:center;
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 160%;
+}
+
+/* Explain part */
+#explain{
+  width: 100%;
+  background: white;
+  padding: 2% 10%;
+  color: #666;
+}
+
+/* Blue icons */
+#explain .row div i{
+  color:rgb(0,160,250);
+  font-size: 600%;
 }

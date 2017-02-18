@@ -1,17 +1,20 @@
+/* Fonts */
+
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
 @font-face {
   font-family: 'Jaapokki';
   src: url('Jaapokki-Regular.otf'); /* IE9 Compat Modes */
 }
 
+/* General */
+
 html,body{width:100%; height:100%; margin:0; padding:0;}
-.background#app{
-  position:absolute;
-  height: 100%;
-  background: url('../img/bg.jpg');
+body{
+  background: url('../img/bg-flat.jpg');
   background-size: cover;
-  z-index: 1;
 }
+
+/* Header */
 #header{
   font-family: Roboto;
   font-weight: 300;
@@ -31,30 +34,14 @@ html,body{width:100%; height:100%; margin:0; padding:0;}
 #header input:focus{
   border: 2px solid #ccc;
 }
-#add input:focus{
-  border: 2px solid #ccc;
-}
-#brand{
+#header #brand{
   font-family: Jaapokki;
   text-align: center;
   font-size: 230%;
   color: black;
 }
 
-
-#add{
-  width: 50%; margin: auto;
-  margin-bottom: 2em;
-}
-
-#warning-mail{
-  width:90%;margin:auto;
-  padding-bottom: 2em;
-  position: relative;
-  top: 1em;
-  z-index: -1;
-}
-
+/* Inputs */
 input {
   border: none;
   border-bottom: 1px solid #ccc;
@@ -71,90 +58,7 @@ input:focus{
 
 
 
-h3{
-  font-size:110%;
-  text-align: center;
-  color: white;
-  margin-bottom: 2.5em;
-}
-
-
-.delete-entry{
-  color: red;
-}
-.delete-entry:hover{
-  cursor: pointer;
-}
 
 #author{
   font-weight: bold;
-}
-
-
-#table{
-  font-family: Roboto;
-  padding: 1em;
-  background: #fff;
-  width: 90%; margin: auto;
-  min-height: 200px;
-  max-height: 510px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  border-radius: 5px;
-  margin-bottom: 0.3em;
-  overflow: scroll;
-}
-#bottom-table{
-  width: 90%; margin: auto;
-  margin-bottom: 1.7em;
-  color:white;
-  font-size: 80%;
-}
-
-.entry .big{
-  text-align:right;
-}
-.entry .address{
-  text-align:center;
-  color: #666;
-  font-weight: bold;
-}
-.entry .address input{
-  width: 90%;
-  text-align:center;
-}
-.big{
-  width: 80%;
-  font-size:130%;
-}
-
-.desc{
-  font-size: 80%;
-}
-.desc textarea{
-  width: 100%; min-height: 150px;
-  border: none; background: none;
-  border-left: 1px solid #ccc;
-  padding-left: 1em;
-  color: #666;
-}
-.desc textarea:focus{
-  border-left: 1px solid #2196F3;
-  color: black;
-}
-
-.state textarea{
-  font-size: 80%;
-  width: 100%; min-height: 100px;
-  border: none; background: none;
-  border-left: 1px solid #ccc;
-  padding-left: 1em;
-  color: #666;
-}
-.state textarea:focus{
-  border-left: 1px solid #2196F3;
-  color: black;
-}
-
-.state select{
-  margin-bottom: 1em;
 }
