@@ -56,18 +56,32 @@ apiRoutes.get('/list/:id', function(req,res,next){
 
 });
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* *                             SeLoger.com                           * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 var seloger = function(html){
 
+  // Load cheerio
   var $ = cheerio.load(html);
 
+  // Create object that we'll return
   var json = { title : "", price : "", desc : "", img : "", superf : "",
 tel : "", addr : ""};
+
+  var location = {
+    title     : "",
+    price     : "#price",
+    desc      : "p.description",
+    img       : "ul#slider1",
+    superf    : "ol.description-liste"
+  };
 
   // Get title
   // TODO
 
   // Get price and remove everything after €
-  $('#price').filter(function(){
+  $(location.price).filter(function(){
       json.price = $(this).text();
       json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
       json.price = json.price.replace(/€.*/,"");
@@ -75,7 +89,7 @@ tel : "", addr : ""};
   })
 
   // Get description
-  $('p.description').filter(function(){
+  $(location.desc).filter(function(){
       json.desc = $(this).text();
       json.desc = json.desc.replace(/(\r\n|\r|\t|  )/gm,"");
   })
@@ -84,14 +98,13 @@ tel : "", addr : ""};
   json.address = extractAddresses(json.desc)[0] || "À définir";
 
   // Get image
-  $('ul#slider1').filter(function(){
+  $(location.img).filter(function(){
       json.img = $(this).html();
-      //console.log(">>>"+json.img+"<<<");
       json.img = json.img.match(/src="(.*?)"/)[1];
   })
 
   // Get superficy
-  $('ol.description-liste').children().first().filter(function(){
+  $(location.superf).children().first().filter(function(){
     json.superf = $(this).text().replace("Surface de ","").replace(/(\r\n|\n|\r|\t|  )/gm,"");
   })
 
@@ -101,20 +114,34 @@ tel : "", addr : ""};
   return json;
 };
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* *                             LE BON COIN                           * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 var leboncoin = function(html){
+  // Load cheerio
   var $ = cheerio.load(iconv.decode(html, 'iso-8859-1'));
 
+  // Create object that we'll return
   var json = { title : "", price : "", desc : "", img : "", superf : "",
 tel : "", addr : ""};
 
+  var location = {
+    title     : ".no-border",
+    price     : "h2.item_price span.value",
+    desc      : "div.properties_description p.value",
+    img       : "div.item_image.big.popin-open.trackable",
+    superf    : "h2.clearfix span.property"
+  };
+
   // Get title
-  $('.no-border').filter(function(){
+  $(location.title).filter(function(){
       json.title = $(this).text();
       json.title = json.title.replace(/(\r\n|\n|\r)/gm,"");
   })
 
   // Get price and remove everything after €
-  $('h2.item_price span.value').filter(function(){
+  $(location.price).filter(function(){
       json.price = $(this).text();
       json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
       json.price = json.price.replace(/€.*/,"");
@@ -122,7 +149,7 @@ tel : "", addr : ""};
   })
 
   // Get description
-  $('div.properties_description p.value').filter(function(){
+  $(location.desc).filter(function(){
       json.desc = $(this).text();
       json.desc = json.desc.replace(/(\r|\r|\t|  )/gm,"");
   })
@@ -131,18 +158,20 @@ tel : "", addr : ""};
   json.address = extractAddresses(json.desc)[0] || "À définir";
 
   // Get image
-  $('div.item_image.big.popin-open.trackable').filter(function(){
+  $(location.img).filter(function(){
       json.img = $(this).html();
-      json.img = json.img.match(/data-imgsrc="(.*?)"/)[1];
+      json.img = json.img.match(/data-imgsrc="(.*?)"/)[1]; // * Specific
   })
 
   // Get superficy
-  $('h2.clearfix span.property').filter(function(){
+  $(location.superf).filter(function(){
       if ($(this).text() == "Surface")
         json.superf = $(this).next().text();
+        json.superf = json.superf.replace("m2","m²");
   })
 
   // Get contact info
+  /*
   $('span.phone_number a').filter(function(){
       json.tel = $(this).text();
   })
@@ -160,6 +189,7 @@ tel : "", addr : ""};
       //json.tel = jsonObject.phoneUrl;
     }
   })
+  */
 
   return json;
 };
