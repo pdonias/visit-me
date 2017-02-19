@@ -56,7 +56,113 @@ apiRoutes.get('/list/:id', function(req,res,next){
 
 });
 
+var seloger = function(html){
 
+  var $ = cheerio.load(html);
+
+  var json = { title : "", price : "", desc : "", img : "", superf : "",
+tel : "", addr : ""};
+
+  // Get title
+  // TODO
+
+  // Get price and remove everything after €
+  $('#price').filter(function(){
+      json.price = $(this).text();
+      json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
+      json.price = json.price.replace(/€.*/,"");
+      json.price+="€";
+  })
+
+  // Get description
+  $('p.description').filter(function(){
+      json.desc = $(this).text();
+      json.desc = json.desc.replace(/(\r\n|\r|\t|  )/gm,"");
+  })
+
+  // Get address from description
+  json.address = extractAddresses(json.desc)[0] || "À définir";
+
+  // Get image
+  $('ul#slider1').filter(function(){
+      json.img = $(this).html();
+      //console.log(">>>"+json.img+"<<<");
+      json.img = json.img.match(/src="(.*?)"/)[1];
+  })
+
+  // Get superficy
+  $('ol.description-liste').children().first().filter(function(){
+    json.superf = $(this).text().replace("Surface de ","").replace(/(\r\n|\n|\r|\t|  )/gm,"");
+  })
+
+  // Get contact info
+  // TODO
+
+  return json;
+};
+
+var leboncoin = function(html){
+  var $ = cheerio.load(iconv.decode(html, 'iso-8859-1'));
+
+  var json = { title : "", price : "", desc : "", img : "", superf : "",
+tel : "", addr : ""};
+
+  // Get title
+  $('.no-border').filter(function(){
+      json.title = $(this).text();
+      json.title = json.title.replace(/(\r\n|\n|\r)/gm,"");
+  })
+
+  // Get price and remove everything after €
+  $('h2.item_price span.value').filter(function(){
+      json.price = $(this).text();
+      json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
+      json.price = json.price.replace(/€.*/,"");
+      json.price+="€";
+  })
+
+  // Get description
+  $('div.properties_description p.value').filter(function(){
+      json.desc = $(this).text();
+      json.desc = json.desc.replace(/(\r|\r|\t|  )/gm,"");
+  })
+
+  // Get address from description
+  json.address = extractAddresses(json.desc)[0] || "À définir";
+
+  // Get image
+  $('div.item_image.big.popin-open.trackable').filter(function(){
+      json.img = $(this).html();
+      json.img = json.img.match(/data-imgsrc="(.*?)"/)[1];
+  })
+
+  // Get superficy
+  $('h2.clearfix span.property').filter(function(){
+      if ($(this).text() == "Surface")
+        json.superf = $(this).next().text();
+  })
+
+  // Get contact info
+  $('span.phone_number a').filter(function(){
+      json.tel = $(this).text();
+  })
+
+  var id = "";
+  $('span.phoneNumber.trackable.link-like').filter(function(){
+      id = $(this).attr('data-listid');
+  })
+
+  var addr_phone_n = "http://www2.leboncoin.fr/ajapi/get/phone?list_id="+id;
+
+  request(addr_phone_n, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      //var jsonObject = JSON.parse(body);
+      //json.tel = jsonObject.phoneUrl;
+    }
+  })
+
+  return json;
+};
 
 /*
 
@@ -78,71 +184,20 @@ apiRoutes.post('/annonce', function(req, res){
   }, function(error, response, html){
 
       // First we'll check to make sure no errors occurred when making the request
-      var json = { title : "", price : "", desc : "", img : "", superf : "",
-    tel : "", addr : ""};
-
       if(!error){
-          // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+        var json = { title : "", price : "", desc : "", img : "", superf : "",
+      tel : "", addr : "ERROR"};
 
-          var $ = cheerio.load(iconv.decode(html, 'iso-8859-1'));
+        // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
 
-          // Finally, we'll define the variables we're going to capture
-          json.link = req.body.link;
 
-          // Get title
-          $('.no-border').filter(function(){
-              json.title = $(this).text();
-              json.title = json.title.replace(/(\r\n|\n|\r)/gm,"");
-          })
+        if (url.includes("boncoin"))
+          json = leboncoin(html);
+        else if (url.includes("seloger"))
+          json = seloger(html);
 
-          // Get price and remove everything after €
-          $('h2.item_price span.value').filter(function(){
-              json.price = $(this).text();
-              json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
-              json.price = json.price.replace(/€.*/,"");
-              json.price+="€";
-          })
-
-          // Get description
-          $('div.properties_description p.value').filter(function(){
-              json.desc = $(this).text();
-              json.desc = json.desc.replace(/(\r\n|\n|\r|\t|  )/gm,"");
-          })
-
-          // Get address from description
-          json.address = extractAddresses(json.desc)[0] || "À définir";
-
-          // Get image
-          $('div.item_image.big.popin-open.trackable').filter(function(){
-              json.img = $(this).html();
-              json.img = json.img.match(/data-imgsrc="(.*?)"/)[1];
-          })
-
-          // Get superficy
-          $('h2.clearfix span.property').filter(function(){
-              if ($(this).text() == "Surface")
-                json.superf = $(this).next().text();
-          })
-
-          // Get contact info
-          $('span.phone_number a').filter(function(){
-              json.tel = $(this).text();
-          })
-
-          var id = "";
-          $('span.phoneNumber.trackable.link-like').filter(function(){
-              id = $(this).attr('data-listid');
-          })
-
-          var addr_phone_n = "http://www2.leboncoin.fr/ajapi/get/phone?list_id="+id;
-
-          request(addr_phone_n, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-              //var jsonObject = JSON.parse(body);
-              //json.tel = jsonObject.phoneUrl;
-            }
-          })
-
+        // Finally, we'll define the variables we're going to capture
+        json.link = req.body.link;
 
       }
 
