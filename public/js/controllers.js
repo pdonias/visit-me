@@ -104,7 +104,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
   // Add a list to the database and get its key
   $scope.createList = function() {
 
-    $http.get(API_ENDPOINT.url + '/list/create').then(function(result) {
+    $http.post(API_ENDPOINT.url + '/list/create', {email: $scope.email}).then(function(result) {
 
       $window.location.href = '/list/'+result.data;
 

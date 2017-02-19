@@ -40,6 +40,12 @@ body{
   font-size: 230%;
   color: black;
 }
+#header #brand a{
+  color: black;
+}
+#header #brand a:hover{
+  text-decoration: none;
+}
 
 /* Inputs */
 input {
