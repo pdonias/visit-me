@@ -26,7 +26,18 @@
     </p>
     <img src="img/demo.png" width="40%" alt="Présentation de l'outil" style="margin-bottom: 2em"/><br/>
 
+    <a href="https://youtu.be/9BrereaWPe8" target="_blank" style="color:white;">
+      <p style="text-align:center;font-size:110%"><i class="fa fa-eye" aria-hidden="true"></i> Voir une démo</p><br/>
+    </a>
+
+    <div class="input-group" id="create-list">
+      <input required name="email" ng-pattern="emailFormat" type="text" ng-model="email" autocomplete="off" class="form-control" placeholder="Votre adresse email" aria-describedby="basic-addon1">
+      <span ng-click="email && createList()" style="background: orange; color: white;" class="input-group-addon btn btn-lg btn-warning" id="basic-addon1">Créer votre liste</span>
+    </div>
+
+    <!--
   <a href="#" ng-click="createList()" class="btn btn-lg btn-warning">Créer votre liste</a>
+-->
 
   <br/><br/>
   <div id="explain">
