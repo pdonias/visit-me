@@ -57,205 +57,76 @@ apiRoutes.get('/list/:id', function(req,res,next){
 
 });
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/* *                             PAP                                   * */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-var pap = function(html){
-
-  // Load cheerio
-  var $ = cheerio.load(iconv.decode(html, 'iso-8859-1'));
+var parse = function($,parsinginfo){
 
   // Create object that we'll return
   var json = { title : "", price : "", desc : "", img : "", superf : "",
 tel : "", addr : ""};
 
-  var location = {
-    title     : ".title",
-    price     : ".price",
-    desc      : ".item-description",
-    img       : "div.showcase-content",
-    superf    : "ul.item-summary"
-  };
-
   // Get title
   // TODO
 
   // Get price and remove everything after €
-  $(location.price).filter(function(){
-      json.price = $(this).text();
-      json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
-      json.price = json.price.replace(/€.*/,"");
-      json.price+="€";
-  })
-
-  // Get description
-  $(location.desc).first().filter(function(){
-      json.desc = $(this).text();
-      json.desc = json.desc.replace(/(\r\n|\r|\t|  )/gm,"");
-  })
-
-  json.info = extractInfo(json.desc.toLowerCase());
-
-  // Get address from description
-  json.address = extractAddresses(json.desc)[0] || "À définir";
-
-  // Get image
-  $(location.img).filter(function(){
-      json.img = $(this).html();
-      json.img = json.img.match(/src="(.*?)"/)[1];
-  })
-
-  // Get superficy
-  $(location.superf).children().last().filter(function(){
-    json.superf = $(this).text().replace("Surface","").replace(/(\r\n|\n|\r|\t|  )/gm,"");
-  })
-
-  // Get contact info
-  // TODO
-
-  return json;
-};
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/* *                             SeLoger.com                           * */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-var seloger = function(html){
-
-  // Load cheerio
-  var $ = cheerio.load(html);
-
-  // Create object that we'll return
-  var json = { title : "", price : "", desc : "", img : "", superf : "",
-tel : "", addr : ""};
-
-  var location = {
-    title     : "",
-    price     : "#price",
-    desc      : "p.description",
-    img       : "ul#slider1",
-    superf    : "ol.description-liste"
-  };
-
-  // Get title
-  // TODO
-
-  // Get price and remove everything after €
-  $(location.price).filter(function(){
-      json.price = $(this).text();
-      json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
-      json.price = json.price.replace(/€.*/,"");
-      json.price+="€";
-  })
-
-  // Get description
-  $(location.desc).filter(function(){
-      json.desc = $(this).text();
-      json.desc = json.desc.replace(/(\r\n|\r|\t|  )/gm,"");
-  })
-
-  // Get address from description
-  json.address = extractAddresses(json.desc)[0] || "À définir";
-
-  // Get image
-  $(location.img).filter(function(){
-      json.img = $(this).html();
-      json.img = json.img.match(/src="(.*?)"/)[1];
-  })
-
-  // Get superficy
-  $(location.superf).children().first().filter(function(){
-    json.superf = $(this).text().replace("Surface de ","").replace(/(\r\n|\n|\r|\t|  )/gm,"");
-  })
-
-  // Get contact info
-  // TODO
-
-  return json;
-};
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/* *                             LE BON COIN                           * */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-var leboncoin = function(html){
-  // Load cheerio
-  var $ = cheerio.load(iconv.decode(html, 'iso-8859-1'));
-
-  // Create object that we'll return
-  var json = { title : "", price : "", desc : "", img : "", superf : "",
-tel : "", addr : ""};
-
-  var location = {
-    title     : ".no-border",
-    price     : "h2.item_price span.value",
-    desc      : "p.property.semibold",
-    img       : "div.item_image.big.popin-open.trackable",
-    superf    : "h2.clearfix span.property"
-  };
-
-  // Get title
-  $(location.title).filter(function(){
-      json.title = $(this).text();
-      json.title = json.title.replace(/(\r\n|\n|\r)/gm,"");
-  })
-
-  // Get price and remove everything after €
-  $(location.price).filter(function(){
-      json.price = $(this).text();
-      json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
-      json.price = json.price.replace(/€.*/,"");
-      json.price+="€";
-  })
-
-  // Get description
-  $(location.desc).next().filter(function(){
-      json.desc = $(this).text();
-      json.desc = json.desc.replace(/(\r|\r|\t|  )/gm,"");
-  })
-
-  // Get address from description
-  json.address = extractAddresses(json.desc)[0] || "À définir";
-
-  json.info = extractInfo(json.desc.toLowerCase());
-
-  // Get image
-  $(location.img).filter(function(){
-      json.img = $(this).html();
-      json.img = json.img.match(/data-imgsrc="(.*?)"/)[1]; // * Specific
-  })
-
-  // Get superficy
-  $(location.superf).filter(function(){
-      if ($(this).text() == "Surface")
-        json.superf = $(this).next().text();
-        json.superf = json.superf.replace("m2","m²");
-  })
-
-  // Get contact info
-  /*
-  $('span.phone_number a').filter(function(){
-      json.tel = $(this).text();
-  })
-
-  var id = "";
-  $('span.phoneNumber.trackable.link-like').filter(function(){
-      id = $(this).attr('data-listid');
-  })
-
-  var addr_phone_n = "http://www2.leboncoin.fr/ajapi/get/phone?list_id="+id;
-
-  request(addr_phone_n, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      //var jsonObject = JSON.parse(body);
-      //json.tel = jsonObject.phoneUrl;
+  $(parsinginfo.price.location).filter(function(){
+    json.price = $(this)[parsinginfo.price.fun[0]]();
+    for (var i = 1; i < parsinginfo.price.fun.length; i++) {
+      json.price = json.price[parsinginfo.price.fun[i]]();
     }
+    json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
   })
-  */
+
+  // Get description
+  if (parsinginfo.desc.pre != ""){
+    $(parsinginfo.desc.location)[parsinginfo.desc.pre]().filter(function(){
+      json.desc = $(this);
+      for (var i = 0; i < parsinginfo.desc.fun.length; i++) {
+        json.desc = json.desc[parsinginfo.desc.fun[i]]();
+      }
+      json.desc = json.desc.replace(/(\r\n|\r|\t|  )/gm,"");
+    })
+  } else {
+    $(parsinginfo.desc.location).filter(function(){
+      json.desc = $(this);
+      for (var i = 0; i < parsinginfo.desc.fun.length; i++) {
+        json.desc = json.desc[parsinginfo.desc.fun[i]]();
+      }
+      json.desc = json.desc.replace(/(\r\n|\r|\t|  )/gm,"");
+    })
+  }
+
+
+  // Get address from description
+  json.address = extractAddresses(json.desc)[0] || "À définir";
+
+  json.info = extractInfo(json.desc.toLowerCase());
+
+  // Get image
+  $(parsinginfo.img.location).filter(function(){
+    json.img = $(this)[parsinginfo.img.fun[0]]();
+    for (var i = 1; i < parsinginfo.img.fun.length; i++) {
+      json.img = json.img[parsinginfo.img.fun[i]]();
+    }
+    json.img = json.img.match(parsinginfo.img.regex)[1];
+  })
+
+  // Get superficy
+  $(parsinginfo.superf.location).filter(function(){
+    //console.log("############### "+parsinginfo.superf.fun[0]);
+    json.superf = $(this)[parsinginfo.superf.fun[0]]();
+    for (var i = 1; i < parsinginfo.superf.fun.length; i++) {
+      //console.log("############### "+parsinginfo.superf.fun[i]);
+      json.superf = json.superf[parsinginfo.superf.fun[i]]();
+    }
+    json.superf = json.superf.replace(/(\r\n|\n|\r|\t|  )/gm,"");
+  })
+
+  // Get contact info
+  // TODO
 
   return json;
 };
+
+
 
 /*
 
@@ -284,12 +155,60 @@ apiRoutes.post('/annonce', function(req, res){
         // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
 
 
-        if (url.includes("boncoin"))
-          json = leboncoin(html);
-        else if (url.includes("seloger"))
-          json = seloger(html);
-        else if (url.includes("pap"))
-          json = pap(html);
+        if (url.includes("boncoin")){
+          var parsinginfo = {
+            title     : {location: ".no-border", fun: ["text"]},
+            price     : {location: "h2.item_price span.value", fun: ["text"]},
+            desc      : {location: "p.property.semibold", fun: ["next","text"]},
+            img       : {location: "div.item_image.big.popin-open.trackable", fun: ["html"], regex : /src="(.*?)"/},
+            superf    : {location: "section.properties", fun: ["text"]}
+          };
+          json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')),parsinginfo);
+
+          // Specific stuff
+          json.superf = json.superf.match(/Surface(\d+ m2)/)[1];
+
+        }
+        else if (url.includes("seloger")){
+          var parsinginfo = {
+            title     : {location: "", fun: ["text"]},
+            price     : {location: "#price", fun: ["text"]},
+            desc      : {location: "p.description", pre: "", fun: ["next","text"]},
+            img       : {location: "ul#slider1", fun: ["html"], regex : /src="(.*?)"/},
+            superf    : {location: "ol.description-liste", fun: ["children","first","text"]}
+          };
+          json = parse(cheerio.load(html),parsinginfo);
+
+          // Specific stuff
+          json.superf = json.superf.replace("Surface de ","");
+        }
+        else if (url.includes("pap")){
+          var parsinginfo = {
+            title     : {location: ".title", fun: ["text"]},
+            price     : {location: ".price", fun: ["text"]},
+            desc      : {location: "p.item-description", pre: "first", fun: ["text"]},
+            img       : {location: "div.showcase-content", fun: ["html"], regex : /src="(.*?)"/},
+            superf    : {location: "ul.item-summary", fun: ["children","last","text"]}
+          };
+          json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')),parsinginfo);
+
+          // Specific stuff
+          json.superf = json.superf.replace("Surface","");
+        }
+        else if (url.includes("paruvendu")){
+          var parsinginfo = {
+            title     : {location: "h1.auto2012_dettophead1txt1", fun: ["text"]},
+            price     : {location: "#autoprix", fun: ["text"]},
+            desc      : {location: ".im12_txt_ann.im12_txt_ann_auto", pre: "", fun: ["text"]},
+            img       : {location: "div.imdet15-blcphomain", fun: ["html"], regex : /src="(.*?)"/},
+            superf    : {location: "ul.imdet15-infoscles", fun: ["children","first","next","text"]}
+          };
+          json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')),parsinginfo);
+
+          // Specific stuff
+          json.price+="€";
+          json.superf = json.superf.replace("Surface :","").replace("environ","");
+        }
 
         // Finally, we'll define the variables we're going to capture
         json.link = req.body.link;

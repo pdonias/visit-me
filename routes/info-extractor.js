@@ -4,19 +4,6 @@ function pure (text) {
     .replace(/ +/g, ' ') // "6   rue  foo" => "6 rue foo"
 }
 
-const STOPS = [
-  ',',
-  ';',
-  ':',
-  '\\.',
-  '\\(',
-  '\\)',
-  '\n',
-  '\r'
-]
-
-const SPLIT_RE = new RegExp(STOPS.join('|'), 'g')
-
 module.exports = function (text) {
   var results = [
     {
