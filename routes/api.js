@@ -209,6 +209,19 @@ apiRoutes.post('/annonce', function(req, res){
           json.price+="€";
           json.superf = json.superf.replace("Surface :","").replace("environ","");
         }
+        else if (url.includes("fnaim")){
+          var parsinginfo = {
+            title     : {location: "h1.auto2012_dettophead1txt1", fun: ["text"]},
+            price     : {location: ".prix", fun: ["text"]},
+            desc      : {location: ".description", pre: "", fun: ["text"]},
+            img       : {location: "div.imageBig", fun: ["html"], regex : /src="(.*?)"/},
+            superf    : {location: ".informations", fun: ["text"]}
+          };
+          json = parse(cheerio.load(html),parsinginfo);
+
+          // Specific stuff
+          json.superf = json.superf.match(/Surface habitable :(\d+ m)/)[1]+"2";
+        }
 
         // Finally, we'll define the variables we're going to capture
         json.link = req.body.link;
