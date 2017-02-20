@@ -4,6 +4,7 @@ var cheerio  = require('cheerio');
 var mongoose = require('mongoose');
 var moment = require('moment');
 var extractAddresses = require('address-extractor');
+var extractInfo = require('./info-extractor.js');
 
 var iconv = require('iconv-lite');
 
@@ -55,6 +56,66 @@ apiRoutes.get('/list/:id', function(req,res,next){
   });
 
 });
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* *                             PAP                                   * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+var pap = function(html){
+
+  // Load cheerio
+  var $ = cheerio.load(iconv.decode(html, 'iso-8859-1'));
+
+  // Create object that we'll return
+  var json = { title : "", price : "", desc : "", img : "", superf : "",
+tel : "", addr : ""};
+
+  var location = {
+    title     : ".title",
+    price     : ".price",
+    desc      : ".item-description",
+    img       : "div.showcase-content",
+    superf    : "ul.item-summary"
+  };
+
+  // Get title
+  // TODO
+
+  // Get price and remove everything after €
+  $(location.price).filter(function(){
+      json.price = $(this).text();
+      json.price = json.price.replace(/(\r\n|\n|\r|\t|  )/gm,"");
+      json.price = json.price.replace(/€.*/,"");
+      json.price+="€";
+  })
+
+  // Get description
+  $(location.desc).first().filter(function(){
+      json.desc = $(this).text();
+      json.desc = json.desc.replace(/(\r\n|\r|\t|  )/gm,"");
+  })
+
+  json.info = extractInfo(json.desc.toLowerCase());
+
+  // Get address from description
+  json.address = extractAddresses(json.desc)[0] || "À définir";
+
+  // Get image
+  $(location.img).filter(function(){
+      json.img = $(this).html();
+      json.img = json.img.match(/src="(.*?)"/)[1];
+  })
+
+  // Get superficy
+  $(location.superf).children().last().filter(function(){
+    json.superf = $(this).text().replace("Surface","").replace(/(\r\n|\n|\r|\t|  )/gm,"");
+  })
+
+  // Get contact info
+  // TODO
+
+  return json;
+};
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* *                             SeLoger.com                           * */
@@ -129,7 +190,7 @@ tel : "", addr : ""};
   var location = {
     title     : ".no-border",
     price     : "h2.item_price span.value",
-    desc      : "div.properties_description p.value",
+    desc      : "p.property.semibold",
     img       : "div.item_image.big.popin-open.trackable",
     superf    : "h2.clearfix span.property"
   };
@@ -149,13 +210,15 @@ tel : "", addr : ""};
   })
 
   // Get description
-  $(location.desc).filter(function(){
+  $(location.desc).next().filter(function(){
       json.desc = $(this).text();
       json.desc = json.desc.replace(/(\r|\r|\t|  )/gm,"");
   })
 
   // Get address from description
   json.address = extractAddresses(json.desc)[0] || "À définir";
+
+  json.info = extractInfo(json.desc.toLowerCase());
 
   // Get image
   $(location.img).filter(function(){
@@ -225,6 +288,8 @@ apiRoutes.post('/annonce', function(req, res){
           json = leboncoin(html);
         else if (url.includes("seloger"))
           json = seloger(html);
+        else if (url.includes("pap"))
+          json = pap(html);
 
         // Finally, we'll define the variables we're going to capture
         json.link = req.body.link;
