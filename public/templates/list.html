@@ -48,103 +48,85 @@
 <i>Vous avez des données non sauvegardées ! Renseigner une adresse email pour sauvegarder (sinon vous allez tout perdre, ce serait dommage).</i>
 </div>
 
+<div class="row" style="width:95%;margin:auto;">
+  <div class="col-md-2" ng-repeat="a in data.list.slice().reverse()" style="padding:0;">
+    <div class="item" style="background:white;width:95%;margin:auto;border:1px solid #ccc;box-shadow:2px 0 5px rgba(0,0,0,0.3)">
 
-<div id="table">
+      <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true" ng-click="delete($index)"></span>
+      <a href="{{a.link}}" target="_blank">
+        <img width="100%" ng-src="{{a.img}}" alt="Apercu"/>
+      </a>
 
-  <div style="text-align:center;" class="alert alert-info" ng-if="data.list.length == 0">
-    <b>Oh non !</b> Vous n'avez pas d'annonce dans cette liste.<br/>
-    Copiez/collez un lien vers une annonce dans la barre en haut puis cliquez sur <b>Ajouter</b>.
-  </div>
-
-  <div ng-if="data.list.length == 0" class="row" style="text-align:center; color: #999; padding-bottom: 2em;">
-    <div class="col-md-3">
-      <h4>Je ne cherche pas en ce moment</h4><br/>
-      <p>Vous pouvez rentrer votre adresse mail pour recevoir un mail le jour où
-        vous chercherez un logement.</p>
-      <input type="text" placeholder="Adresse email" ng-change="changed()" ng-model="data.email"/>
-      <a class="btn btn-success btn-xs" ng-click="save()">Enregistrer</a>
-    </div>
-    <div class="col-md-9">
-      <h4>Lancez vos recherches !</h4>
-      <p>Cliquez ci-dessous pour ouvrir les différents sites que nous savons analyser</p>
+      <!-- DEBUG
       <div class="row">
-        <div class="col-md-4" style="margin-bottom: 1em" ng-repeat="w in readableWebsites"><a href="{{w.url}}" target="_blank"><img src="{{w.img}}" alt="{{w.name}}" height="42px"/><br/>{{w.name}}</a></div>
+        <div class="col-md-6" ng-repeat="i in a.info" ng-if="i.text != ''" style="font-size: 50%;border:1px solid #eaeaea;">{{i.text}}</div>
       </div>
-    </div>
-  </div>
+      -->
 
-  <table class="table table-striped" ng-if="data.list.length != 0">
-    <tr>
-      <th>Aperçu</th>
-      <th>Informations</th>
-      <th>Description</th>
-      <th>État</th>
-      <th>Adresse</th>
-      <th></th>
-      <th></th>
-    </tr>
+      <div class="basic-info">
+        <i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;
+        <input type="text" ng-change="changed()" ng-model="a.address"/><br/>
 
-    <tr ng-if="loading" id="loading">
-      <td><img src="http://placehold.it/130x90"></td>
-      <td><img src="../img/loading.gif" width="30px"/></td>
-
-      <td class="desc" width="30%">
-        <textarea placeholder="Loading..."></textarea>
-      </td>
-
-      <td class="state" width="13%">
-        <select ng-change="changed()" ng-model="a.state">
-            <option checked value="not-contacted">Pas contacté</option>
-            <option value="message">Message laissé</option>
-            <option value="visit-planned">Rendez-vous fixé</option>
-            <option value="visited">Visité</option>
-          </select>
-          <textarea ng-model="a.notes" placeholder="Date de prise de contact. Date du RDV pour la visite. Notes sur l'appartement."></textarea>
-      </td>
-      <td><img src="../img/loading.gif" width="30px"/></td>
-      <td style="opacity:0.5">
-        <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true"></span>
-      </td>
-      <td style="opacity:0.5"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></td>
-    </tr>
-
-    <tr class="entry" ng-repeat="a in data.list.slice().reverse()">
-
-      <td width="130px"><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
-      <td width="15%">
-        <i class="fa fa-euro" aria-hidden="true"></i>
-        <input class="big" type="text" ng-change="changed()" ng-model="a.price" placeholder="Prix"/><br/>
+        <i class="fa fa-euro" aria-hidden="true"></i>&nbsp;
+        <input type="text" ng-change="changed()" ng-model="a.price" placeholder="Prix"/><br/>
 
         <i class="fa fa-expand" aria-hidden="true"></i>
-        <input class="big" type="text" ng-change="changed()" ng-model="a.superf" placeholder="Superficie"/><br/>
+        <input type="text" ng-change="changed()" ng-model="a.superf" placeholder="Superficie"/><br/>
 
         <i class="fa fa-phone" aria-hidden="true"></i>
-        <input class="big" type="text" ng-change="changed()" ng-model="a.contact" placeholder="Contact"/>
-      </td>
+        <input type="text" ng-change="changed()" ng-model="a.contact" placeholder="Contact"/>
 
-      <td class="desc" width="30%">
-        <textarea ng-change="changed()" ng-model="a.desc"></textarea>
-      </td>
+        <select style="width:100%" ng-change="changed()" ng-model="a.state">
+          <option value="not-contacted">Pas contacté</option>
+          <option value="message">Message laissé</option>
+          <option value="visit-planned">Rendez-vous fixé</option>
+          <option value="visited">Visité</option>
+        </select>
+      </div>
 
-      <td class="state" width="20%">
-        <select ng-change="changed()" ng-model="a.state">
-            <option value="not-contacted">Pas contacté</option>
-            <option value="message">Message laissé</option>
-            <option value="visit-planned">Rendez-vous fixé</option>
-            <option value="visited">Visité</option>
-          </select>
-          <textarea ng-change="changed()" ng-model="a.notes" placeholder="Date de prise de contact. Date du RDV pour la visite. Notes sur l'appartement."></textarea>
-      </td>
+      <textarea class="notes" ng-change="changed()" ng-model="a.notes" placeholder="Date de prise de contact. Date du RDV pour la visite. Notes sur l'appartement."></textarea>
 
-      <td width="20%" class="address"><input type="text" ng-change="changed()" ng-model="a.address"></td>
-
-      <td data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce">
-        <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true" ng-click="delete($index)"></span>
-      </td>
-      <td><a href="{{a.link}}" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
-
-    </tr>
-
-  </table>
+    </div>
+  </div>
 
 </div>
+
+
+<!--
+<tr class="entry" ng-repeat="a in data.list.slice().reverse()">
+
+<td width="130px"><img width="130px" ng-src="{{a.img}}" alt="Apercu"/></td>
+<td width="15%">
+  <i class="fa fa-euro" aria-hidden="true"></i>
+  <input class="big" type="text" ng-change="changed()" ng-model="a.price" placeholder="Prix"/><br/>
+
+  <i class="fa fa-expand" aria-hidden="true"></i>
+  <input class="big" type="text" ng-change="changed()" ng-model="a.superf" placeholder="Superficie"/><br/>
+
+  <i class="fa fa-phone" aria-hidden="true"></i>
+  <input class="big" type="text" ng-change="changed()" ng-model="a.contact" placeholder="Contact"/>
+</td>
+
+<td class="desc" width="30%">
+  <textarea ng-change="changed()" ng-model="a.desc"></textarea>
+</td>
+
+<td class="state" width="20%">
+  <select ng-change="changed()" ng-model="a.state">
+      <option value="not-contacted">Pas contacté</option>
+      <option value="message">Message laissé</option>
+      <option value="visit-planned">Rendez-vous fixé</option>
+      <option value="visited">Visité</option>
+    </select>
+    <textarea ng-change="changed()" ng-model="a.notes" placeholder="Date de prise de contact. Date du RDV pour la visite. Notes sur l'appartement."></textarea>
+</td>
+
+<td width="20%" class="address"><input type="text" ng-change="changed()" ng-model="a.address"></td>
+
+<td data-toggle="tooltip" data-placement="top" title="Supprimer l'annonce">
+  <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true" ng-click="delete($index)"></span>
+</td>
+<td><a href="{{a.link}}" target="_blank"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></td>
+
+</tr>
+-->

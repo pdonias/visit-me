@@ -17,82 +17,26 @@
 }
 
 /* Table */
-#table{
-  font-family: Roboto;
-  padding: 1em;
-  background: #fff;
-  width: 90%; margin: auto;
-  min-height: 200px;
-  max-height: 510px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  border-radius: 5px;
-  margin-bottom: 0.3em;
-  overflow: scroll;
+.basic-info{
+  padding: 6%;
+}
+.basic-info input{
+  width: 85%;
+  margin-left: 3%;
+  font-size: 90%;
+}
+.notes{
+  font-size:70%;
+  width:100%;
+  border:0;
+  background:#222;
+  color:white;
+  height:6em;
+  padding: 0.5em;
 }
 
-#loading{
-  opacity:0.5;
-  filter:blur(1px);
-}
-
-/* Entries */
-.entry .big{
-  text-align:right;
-  width: 80%;
-  font-size:130%;
-}
-
-/* Entry - Desc */
-.desc{
-  font-size: 80%;
-}
-.desc textarea{
-  width: 100%; min-height: 150px;
-  border: none; background: none;
-  border-left: 1px solid #ccc;
-  padding-left: 1em;
-  color: #666;
-}
-.desc textarea:focus{
-  border-left: 1px solid #2196F3;
-  color: black;
-}
-
-/* Entry - State */
-.state select{
-  width: 100%;
-  margin-bottom: 1em;
-}
-
-.state textarea{
-  font-size: 80%;
-  width: 100%; min-height: 100px;
-  border: none; background: none;
-  border-left: 1px solid #ccc;
-  padding-left: 1em;
-  color: #666;
-}
-.state textarea:focus{
-  border-left: 1px solid #2196F3;
-  color: black;
-}
-
-
-/* Entry - address */
-.entry .address{
-  text-align:center;
-  color: #666;
-  font-weight: bold;
-}
-.entry .address input{
-  width: 90%;
-  text-align:center;
-}
-
-/* Entry - actions */
-.delete-entry{
-  color: red;
-}
-.delete-entry:hover{
-  cursor: pointer;
+span.delete-entry{
+  position:absolute;right:1em;top:0.5em;
+  color: white;
+  text-shadow: 1px 1px 3px red;
 }

@@ -100,6 +100,11 @@ tel : "", addr : ""};
 
   json.info = extractInfo(json.desc.toLowerCase());
 
+  json.notes='';
+  for (var i = 0; i < json.info.length; i++) {
+    if(json.info[i].text != '') json.notes += json.info[i].text+"\n";
+  }
+
   // Get image
   $(parsinginfo.img.location).filter(function(){
     json.img = $(this)[parsinginfo.img.fun[0]]();
