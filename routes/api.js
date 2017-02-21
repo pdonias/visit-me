@@ -159,7 +159,7 @@ apiRoutes.post('/annonce', function(req, res){
           var parsinginfo = {
             title     : {location: ".no-border", fun: ["text"]},
             price     : {location: "h2.item_price span.value", fun: ["text"]},
-            desc      : {location: "p.property.semibold", fun: ["next","text"]},
+            desc      : {location: "p.property.semibold", pre:"", fun: ["next","text"]},
             img       : {location: "div.item_image.big.popin-open.trackable", fun: ["html"], regex : /src="(.*?)"/},
             superf    : {location: "section.properties", fun: ["text"]}
           };
@@ -173,7 +173,7 @@ apiRoutes.post('/annonce', function(req, res){
           var parsinginfo = {
             title     : {location: "", fun: ["text"]},
             price     : {location: "#price", fun: ["text"]},
-            desc      : {location: "p.description", pre: "", fun: ["next","text"]},
+            desc      : {location: "p.description", pre: "", fun: ["text"]},
             img       : {location: "ul#slider1", fun: ["html"], regex : /src="(.*?)"/},
             superf    : {location: "ol.description-liste", fun: ["children","first","text"]}
           };
@@ -188,12 +188,15 @@ apiRoutes.post('/annonce', function(req, res){
             price     : {location: ".price", fun: ["text"]},
             desc      : {location: "p.item-description", pre: "first", fun: ["text"]},
             img       : {location: "div.showcase-content", fun: ["html"], regex : /src="(.*?)"/},
-            superf    : {location: "ul.item-summary", fun: ["children","last","text"]}
+            superf    : {location: "ul.item-summary", fun: ["text"]}
           };
           json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')),parsinginfo);
 
           // Specific stuff
-          json.superf = json.superf.replace("Surface","");
+          json.superf = json.superf.match(/Surface(\d+)/)[0];
+          console.log(json.superf);
+
+          json.superf = json.superf.replace("Surface","")+"m2";
         }
         else if (url.includes("paruvendu")){
           var parsinginfo = {
@@ -209,7 +212,7 @@ apiRoutes.post('/annonce', function(req, res){
           json.price+="€";
           json.superf = json.superf.replace("Surface :","").replace("environ","");
         }
-        else if (url.includes("fnaim")){
+        else if (url.includes("fnaim38")){
           var parsinginfo = {
             title     : {location: "h1.auto2012_dettophead1txt1", fun: ["text"]},
             price     : {location: ".prix", fun: ["text"]},
