@@ -106,7 +106,8 @@ tel : "", addr : ""};
     for (var i = 1; i < parsinginfo.img.fun.length; i++) {
       json.img = json.img[parsinginfo.img.fun[i]]();
     }
-    json.img = json.img.match(parsinginfo.img.regex)[1];
+    json.img = json.img.match(parsinginfo.img.regex);
+    json.img = json.img && json.img[1];
   })
 
   // Get superficy
@@ -166,8 +167,10 @@ apiRoutes.post('/annonce', function(req, res){
           json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')),parsinginfo);
 
           // Specific stuff
-          json.superf = json.superf.match(/Surface(\d+ m2)/)[1];
+          json.price = json.price.replace("Charges comprises","");
 
+          json.superf = json.superf.match(/Surface(\d+ m2)/);
+          json.superf = json.superf && json.superf[1];
         }
         else if (url.includes("seloger")){
           var parsinginfo = {
@@ -175,28 +178,30 @@ apiRoutes.post('/annonce', function(req, res){
             price     : {location: "#price", fun: ["text"]},
             desc      : {location: "p.description", pre: "", fun: ["text"]},
             img       : {location: "ul#slider1", fun: ["html"], regex : /src="(.*?)"/},
-            superf    : {location: "ol.description-liste", fun: ["children","first","text"]}
+            superf    : {location: "ol.description-liste", fun: ["text"]}
           };
           json = parse(cheerio.load(html),parsinginfo);
 
           // Specific stuff
-          json.superf = json.superf.replace("Surface de ","");
+          // TODO remove whitespaces
+          json.superf = json.superf.match(/Surface de (\d+)/);
+          json.superf = json.superf && json.superf[1]+" m²"
         }
         else if (url.includes("pap")){
           var parsinginfo = {
             title     : {location: ".title", fun: ["text"]},
             price     : {location: ".price", fun: ["text"]},
             desc      : {location: "p.item-description", pre: "first", fun: ["text"]},
-            img       : {location: "div.showcase-content", fun: ["html"], regex : /src="(.*?)"/},
+            img       : {location: "div.image-slider.showcase", fun: ["html"], regex : /src="(.*?)"/},
             superf    : {location: "ul.item-summary", fun: ["text"]}
           };
           json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')),parsinginfo);
 
           // Specific stuff
-          json.superf = json.superf.match(/Surface(\d+)/)[0];
-          console.log(json.superf);
+          json.superf = json.superf.match(/Surface(\d+)/);
+          json.superf = json.superf && json.superf[0];
 
-          json.superf = json.superf.replace("Surface","")+"m2";
+          json.superf = json.superf.replace("Surface","")+"m²";
         }
         else if (url.includes("paruvendu")){
           var parsinginfo = {
@@ -223,7 +228,8 @@ apiRoutes.post('/annonce', function(req, res){
           json = parse(cheerio.load(html),parsinginfo);
 
           // Specific stuff
-          json.superf = json.superf.match(/Surface habitable :(\d+ m)/)[1]+"2";
+          json.superf = json.superf.match(/Surface habitable :(\d+ m)/);
+          json.superf = json.superf && json.superf[1]+"²";
         }
         else if (url.includes("avendrealouer")){
           var parsinginfo = {
@@ -236,7 +242,8 @@ apiRoutes.post('/annonce', function(req, res){
           json = parse(cheerio.load(html),parsinginfo);
 
           // Specific stuff
-          json.superf = json.superf.match(/Surface: (\d+m)/)[1]+"2";
+          json.superf = json.superf.match(/Surface: (\d+m)/);
+          json.superf = json.superf && json.superf[1]+"²";
         }
 
         // Finally, we'll define the variables we're going to capture
