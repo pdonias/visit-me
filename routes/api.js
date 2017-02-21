@@ -38,7 +38,7 @@ apiRoutes.post('/list', function(req,res){
 apiRoutes.post('/list/create', function(req,res,next){
 
   var ls = moment().locale('fr').format('LLLL');
-  List.create({ lastsave: ls, list: [], email: req.body.email }, function (err, small) {
+  List.create({ lastsave: ls, list: [] }, function (err, small) {
     if (err) return handleError(err);
     // saved!
     //console.log(small.id);

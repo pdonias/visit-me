@@ -2,6 +2,15 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
 .controller('ListController', function($scope, $http, $location, ngProgressFactory, API_ENDPOINT) {
 
+  $scope.readableWebsites = [
+    {url: "https://www.leboncoin.fr", name: "Le Bon Coin", img: "https://upload.wikimedia.org/wikipedia/fr/thumb/7/7d/Leboncoin.fr_Logo_2016.svg/1280px-Leboncoin.fr_Logo_2016.svg.png"},
+    {url: "http://www.fnaim38.com", name: "FNAIM38", img: "http://www.fnaim38.com/uploads/Image/bf/4428_868_3618_320_logofna38-3.png"},
+    {url: "http://www.seloger.com", name: "SeLoger", img: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Seloger-logo.gif"},
+    {url: "http://www.avendrealouer.fr", name: "AVendreALouer", img: "http://www.ordissinaute.fr/sites/default/files/styles/full_new_main_no_crop/public/field/image/avendrealouer-logo_0.jpg?itok=FxzOnyRR"},
+    {url: "http://www.pap.fr", name: "PAP", img: "http://www.pap.fr/images/logo-pap-127x70.png"},
+    {url: "http://www.paruvendu.fr", name: "ParuVendu", img: "http://static.paruvendu.com/2017022108/communfo/img/structuresite/home/logoparuvendufr2016.png"},
+  ];
+
   $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
   $scope.linkFormat = /https?:\/\/(www\.)?(fnaim38|leboncoin|avendrealouer|paruvendu|pap|seloger)\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
 
@@ -89,23 +98,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
   // Add a list to the database and get its key
   $scope.createList = function() {
 
-    $http.get(API_ENDPOINT.url + '/list/create').then(function(result) {
-
-      $window.location.href = '/list/'+result.data;
-
-    });
-  };
-
-})
-
-
-
-.controller('HomeController', function($scope, $http, $window, API_ENDPOINT) {
-
-  // Add a list to the database and get its key
-  $scope.createList = function() {
-
-    $http.post(API_ENDPOINT.url + '/list/create', {email: $scope.email}).then(function(result) {
+    $http.post(API_ENDPOINT.url + '/list/create').then(function(result) {
 
       $window.location.href = '/list/'+result.data;
 
