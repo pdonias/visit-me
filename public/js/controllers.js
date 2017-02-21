@@ -2,6 +2,15 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
 .controller('ListController', function($scope, $http, $location, ngProgressFactory, API_ENDPOINT) {
 
+  $scope.readableWebsites = [
+    {url: "", name: "", img: ""},
+    {url: "", name: "", img: ""},
+    {url: "", name: "", img: ""},
+    {url: "", name: "", img: ""},
+    {url: "", name: "", img: ""},
+    {url: "", name: "", img: ""},
+  ];
+
   $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
   $scope.linkFormat = /https?:\/\/(www\.)?(fnaim38|leboncoin|avendrealouer|paruvendu|pap|seloger)\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
 
