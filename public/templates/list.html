@@ -40,11 +40,11 @@
 </div>
 
 
-<div id="warning-mail" ng-if="!EmailForm.email.$valid && !unsaved_changes" class="alert alert-warning">
+<div id="warning-mail" ng-if="data.list.length != 0 && !EmailForm.email.$valid && !unsaved_changes" class="alert alert-warning">
 <i>Renseignez une adresse email pour activer la <b>sauvegarde automatique des données</b>.</i>
 </div>
 
-<div id="warning-mail" ng-if="!EmailForm.email.$valid && unsaved_changes" class="alert alert-danger">
+<div id="warning-mail" ng-if="data.list.length != 0 && !EmailForm.email.$valid && unsaved_changes" class="alert alert-danger">
 <i>Vous avez des données non sauvegardées ! Renseigner une adresse email pour sauvegarder (sinon vous allez tout perdre, ce serait dommage).</i>
 </div>
 
@@ -53,7 +53,7 @@
 
   <div style="text-align:center;" class="alert alert-info" ng-if="data.list.length == 0">
     <b>Oh non !</b> Vous n'avez pas d'annonce dans cette liste.<br/>
-    Coller un lien vers une annonce dans la barre en haut puis cliquez sur <b>Ajouter</b>.
+    Copiez/collez un lien vers une annonce dans la barre en haut puis cliquez sur <b>Ajouter</b>.
   </div>
 
   <div ng-if="data.list.length == 0" class="row" style="text-align:center; color: #999; padding-bottom: 2em;">
@@ -61,13 +61,15 @@
       <h4>Je ne cherche pas en ce moment</h4><br/>
       <p>Vous pouvez rentrer votre adresse mail pour recevoir un mail le jour où
         vous chercherez un logement.</p>
-      <input type="text" placeholder="Adresse email"/>
-      <a class="btn btn-success btn-xs">Enregistrer</a>
+      <input type="text" placeholder="Adresse email" ng-change="changed()" ng-model="data.email"/>
+      <a class="btn btn-success btn-xs" ng-click="save()">Enregistrer</a>
     </div>
     <div class="col-md-9">
-      <h4>Faire une recherche sur 6 sites en même temps</h4>
+      <h4>Lancez vos recherches !</h4>
       <p>Cliquez ci-dessous pour ouvrir les différents sites que nous savons analyser</p>
-      <a href="" target="_blank"><img src="" alt=""/></a>
+      <div class="row">
+        <div class="col-md-4" style="margin-bottom: 1em" ng-repeat="w in readableWebsites"><a href="{{w.url}}" target="_blank"><img src="{{w.img}}" alt="{{w.name}}" height="42px"/><br/>{{w.name}}</a></div>
+      </div>
     </div>
   </div>
 
