@@ -25,12 +25,17 @@
 
 <div id="add-entry">
 
+  <div class="alert alert-warning" ng-if="!AddForm.link.$valid"><b>Oh non!</b> Ce lien n'est pas valide. Peut-être que ce site n'est pas encore accepté sur notre plateforme.<br/>
+    N'hésitez pas à nous envoyez un message sur <a style="color: yellow;" href="https://www.facebook.com/veasit/" target="_blank">Facebook</a> pour nous prévenir ;)</div>
+    <form name="AddForm">
+
   <div class="input-group">
-    <input type="text" class="form-control" ng-model="link" placeholder="Lien vers une annonce (LeBonCoin ou SeLoger.com)">
-    <span class="input-group-btn">
-      <button class="btn btn-default" type="button" ng-click="sendLink()" ng-disabled="link == null || link.length < 15">Ajouter</button>
-    </span>
+      <input type="text" name="link" autocomplete="off" ng-pattern="linkFormat" class="form-control" ng-model="link" placeholder="Lien vers une annonce (LeBonCoin, SeLoger, PAP, ParuVendu, FNAIM38, AVendreALouer)">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="sendLink()" ng-disabled="link == null || link.length < 15 || !AddForm.link.$valid">Ajouter</button>
+      </span>
   </div>
+</form>
 
 </div>
 
