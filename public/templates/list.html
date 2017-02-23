@@ -95,11 +95,12 @@
       <input type="text" placeholder="Adresse email" ng-change="changed()" ng-model="data.email"/>
       <a class="btn btn-success btn-xs" ng-click="save()">Enregistrer</a>
     </div>
+    <hr class="visible-xs"/>
     <div class="col-md-9">
       <h4>Lancez vos recherches !</h4>
       <p>Cliquez ci-dessous pour ouvrir les différents sites que nous savons analyser</p>
       <div class="row">
-        <div class="col-md-4" style="margin-bottom: 1em" ng-repeat="w in readableWebsites"><a href="{{w.url}}" target="_blank"><img src="{{w.img}}" alt="{{w.name}}" height="42px"/><br/>{{w.name}}</a></div>
+        <div class="col-md-4 col-xs-6" style="margin-bottom: 1em" ng-repeat="w in readableWebsites"><a href="{{w.url}}" target="_blank"><img src="{{w.img}}" alt="{{w.name}}" height="42px"/><br/>{{w.name}}</a></div>
       </div>
     </div>
   </div>
@@ -182,6 +183,30 @@
 
 
 <div class="row visible-xs" style="width:95%;margin:auto;">
+
+  <div style="text-align:center;" class="alert alert-info" ng-if="data.list.length == 0">
+    <b>Oh non !</b> Vous n'avez pas d'annonce dans cette liste.<br/>
+    Copiez/collez un lien vers une annonce dans la barre en haut puis cliquez sur <b>Ajouter</b>.
+  </div>
+
+  <div ng-if="data.list.length == 0" class="row" style="background: white; text-align:center; color: #999; padding-bottom: 2em;">
+    <div class="col-md-3">
+      <h4>Je ne cherche pas en ce moment</h4><br/>
+      <p>Vous pouvez rentrer votre adresse mail pour recevoir un mail le jour où
+        vous chercherez un logement.</p>
+      <input type="text" placeholder="Adresse email" ng-change="changed()" ng-model="data.email"/>
+      <a class="btn btn-success btn-xs" ng-click="save()">Enregistrer</a>
+    </div>
+    <hr class="visible-xs"/>
+    <div class="col-md-9">
+      <h4>Lancez vos recherches !</h4>
+      <p>Cliquez ci-dessous pour ouvrir les différents sites que nous savons analyser</p>
+      <div class="row">
+        <div class="col-md-4 col-xs-6" style="margin-bottom: 1em" ng-repeat="w in readableWebsites"><a href="{{w.url}}" target="_blank"><img src="{{w.img}}" alt="{{w.name}}" height="42px"/><br/>{{w.name}}</a></div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-md-2" ng-repeat="a in data.list.slice().reverse()" style="padding:0;">
     <div class="item">
 
