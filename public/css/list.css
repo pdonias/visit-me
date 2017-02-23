@@ -1,10 +1,30 @@
 /* Add a link */
-#add-entry{
-  width: 50%; margin: auto;
-  margin-bottom: 2em;
+@media screen and (min-device-width: 480px) {
+  #add-entry{
+    width: 50%; margin: auto;
+    margin-bottom: 2em;
+  }
+}
+@media screen and (max-device-width: 480px) {
+  #add-entry{
+    width: 90%; margin: auto;
+    margin-bottom: 2em;
+  }
 }
 #add-entry input:focus{
   border: 2px solid #ccc;
+}
+
+#mobile-footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:rgba(0,0,0,0.7);
+  color:white;
+  font-size:90%;
+  text-align:right;
+  padding:0.3em 1em;
+  z-index: 9000;
 }
 
 /* Warning when email is not filled in */
@@ -15,6 +35,59 @@
   top: 1em;
   z-index: -1; /* Necessary to put behind the table */
 }
+
+/* Compact view */
+
+.item{
+  background:white;
+  width:95%;
+  margin:auto;
+  border:1px solid #ccc;
+  box-shadow:2px 0 5px rgba(0,0,0,0.3);
+}
+.basic-info{
+  padding: 6%;
+}
+.basic-info input{
+  width: 85%;
+  margin-left: 3%;
+  font-size: 90%;
+}
+.notes{
+  font-size:90%;
+  width:100%;
+  border:0;
+  background:#222;
+  color:white;
+  height:6em;
+  padding: 0.5em;
+}
+.item select{
+  background-color: #eaeaea;
+  margin-top: 0.5em;
+}
+.item span.delete-entry{
+  background: red;
+  padding: 0.7em;
+  border-radius: 3px;
+  position:absolute;right:1em;top:0.5em;
+  color: white;
+}
+
+@media screen and (min-device-width: 480px) {
+  .item{
+  }
+}
+@media screen and (max-device-width: 480px) {
+  .item{
+    margin-bottom: 2em;
+  }
+  .basic-info input{
+    font-size: 130%;
+  }
+}
+
+
 
 /* Table */
 #table{
@@ -90,9 +163,9 @@
 }
 
 /* Entry - actions */
-.delete-entry{
+td span.delete-entry{
   color: red;
 }
-.delete-entry:hover{
+td span.delete-entry:hover{
   cursor: pointer;
 }
