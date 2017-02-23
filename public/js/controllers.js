@@ -2,6 +2,8 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
 .controller('ListController', function($scope, $http, $location, ngProgressFactory, API_ENDPOINT) {
 
+  //$scope.view = "table";
+
   $scope.readableWebsites = [
     {url: "https://www.leboncoin.fr", name: "Le Bon Coin", img: "https://upload.wikimedia.org/wikipedia/fr/thumb/7/7d/Leboncoin.fr_Logo_2016.svg/1280px-Leboncoin.fr_Logo_2016.svg.png"},
     {url: "http://www.fnaim38.com", name: "FNAIM38", img: "http://www.fnaim38.com/uploads/Image/bf/4428_868_3618_320_logofna38-3.png"},
