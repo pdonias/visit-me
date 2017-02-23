@@ -15,18 +15,30 @@ body{
 }
 
 /* Header */
+@media screen and (min-device-width: 480px) {
+  #header{
+    height: 60px;
+    padding : 1% 5%;
+    padding-bottom: 4em;
+  }
+}
+@media screen and (max-device-width: 480px) {
+  #header{
+    height: auto;
+    padding : 1% 5%;
+    padding-bottom: 1.5em;
+  }
+}
+
 #header{
   font-family: Roboto;
   font-weight: 300;
   color: #999;
 
-  height: 60px;
   width:100%;
   background-color: white;
   text-align: right;
-  padding : 1% 5%;
   margin-bottom: 2em;
-  padding-bottom: 4em;
 }
 #header a{
   color: white;

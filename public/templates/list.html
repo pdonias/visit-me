@@ -1,5 +1,5 @@
 
-<div id="header">
+<div id="header" class="hidden-xs">
   <div class="row">
     <div class="col-md-3">
       <form name="EmailForm">
@@ -23,6 +23,33 @@
   </div>
 </div>
 
+<div id="header" class="visible-xs">
+  <div class="row">
+    <div class="col-xs-12" id="brand">
+      <a href="/">veasit</a>
+    </div>
+
+    <div class="col-xs-12">
+      <form name="EmailForm">
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">@</span>
+          <input required ng-change="changed()" name="email" ng-pattern="emailFormat" type="text" ng-model="data.email" autocomplete="off" class="form-control" placeholder="Votre adresse email" aria-describedby="basic-addon1">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="mobile-footer" class="visible-xs">
+  <div class="row">
+    <div class="col-xs-12">
+
+      Dernière sauvegarde le<br/>
+      <i ng-if="!saving">{{data.lastsave}}</i>
+      <span ng-if="saving" class="label label-success">Success</span>
+    </div>
+  </div>
+</div>
 <div id="add-entry">
 
   <div class="alert alert-warning" ng-if="!AddForm.link.$valid"><b>Oh non!</b> Ce lien n'est pas valide. Peut-être que ce site n'est pas encore accepté sur notre plateforme.<br/>
@@ -32,7 +59,10 @@
   <div class="input-group">
       <input type="text" name="link" autocomplete="off" ng-pattern="linkFormat" class="form-control" ng-model="link" placeholder="Lien vers une annonce (LeBonCoin, SeLoger, PAP, ParuVendu, FNAIM38, AVendreALouer)">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="sendLink()" ng-disabled="link == null || link.length < 15 || !AddForm.link.$valid">Ajouter</button>
+        <button class="btn btn-default" type="button" ng-click="sendLink()" ng-disabled="link == null || link.length < 15 || !AddForm.link.$valid">
+          <span class="hidden-xs">Ajouter</span>
+          <span class="visible-xs">+</span>
+        </button>
       </span>
   </div>
 </form>
@@ -50,7 +80,7 @@
 
 <div class="row" style="width:95%;margin:auto;">
   <div class="col-md-2" ng-repeat="a in data.list.slice().reverse()" style="padding:0;">
-    <div class="item" style="background:white;width:95%;margin:auto;border:1px solid #ccc;box-shadow:2px 0 5px rgba(0,0,0,0.3)">
+    <div class="item">
 
       <span class="glyphicon glyphicon-trash delete-entry" aria-hidden="true" ng-click="delete($index)"></span>
       <a href="{{a.link}}" target="_blank">
