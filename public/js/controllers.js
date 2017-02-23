@@ -14,7 +14,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
   ];
 
   $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
-  $scope.linkFormat = /https?:\/\/(www\.)?(fnaim38|leboncoin|avendrealouer|paruvendu|pap|seloger)\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
+  $scope.linkFormat = /https?:\/\/((www|mobile|m)\.)?(fnaim38|leboncoin|avendrealouer|paruvendu|pap|seloger)\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/;
 
   $scope.data = {
     title: '',

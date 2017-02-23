@@ -236,6 +236,20 @@ apiRoutes.post('/annonce', function(req, res){
           json.superf = json.superf.match(/Surface habitable :(\d+ m)/);
           json.superf = json.superf && json.superf[1]+"²";
         }
+        else if (url.includes("mobile.avendrealouer")){
+          var parsinginfo = {
+            title     : {location: "h1.auto2012_dettophead1txt1", fun: ["text"]},
+            price     : {location: ".prix", fun: ["text"]},
+            desc      : {location: ".description", pre: "", fun: ["text"]},
+            img       : {location: "#slideList", fun: ["html"], regex : /src="(.*?)"/},
+            superf    : {location: ".details", fun: ["children","first","text"]}
+          };
+          json = parse(cheerio.load(html),parsinginfo);
+
+          // Specific stuff
+          json.superf = json.superf.replace("Surface (m²)", "m²");
+          //json.superf = json.superf && json.superf[1]+"²";
+        }
         else if (url.includes("avendrealouer")){
           var parsinginfo = {
             title     : {location: "h1.auto2012_dettophead1txt1", fun: ["text"]},
