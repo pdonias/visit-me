@@ -7,50 +7,50 @@ function pure (text) {
 module.exports = function (text) {
   var results = [
     {
-      str: "Terrasse",
+      str: 'Terrasse',
       re: /terrasse(( de)? \d{0,3}(,\d{0,2})?( |)m(²|2))?/,
       found: false,
-      text: ""
+      text: ''
     },
     {
-      str: "Place de parking",
+      str: 'Place de parking',
       re: /parking|stationnement/,
       found: false,
-      text: ""
+      text: ''
     },
     {
-      str: "Libre le",
+      str: 'Libre le',
       re: /(libre|disponible) (de suite|le \d{1,2}\/?\d{1,2}|en \w+|début \w+|à partir de \w+|à partir du \w+)/,
       found: false,
-      text: ""
+      text: ''
     },
     {
-      str: "Etage",
+      str: 'Etage',
       re: /(\d(e|er|[e|è]me) )?[é|e]tage/,
       found: false,
-      text: ""
+      text: ''
     },
     {
-      str: "Ascenseur",
+      str: 'Ascenseur',
       re: /ascenseur/,
       found: false,
-      text: ""
+      text: ''
     },
     {
-      str: "Chambres",
+      str: 'Chambres',
       re: /(\d+|\w+) chambre(s?)/,
       found: false,
-      text: ""
+      text: ''
     }
   ]
   let matches
 
   for (var i = 0, len = results.length; i < len; i++) {
-    var regex = results[i].re;
+    var regex = results[i].re
     matches = regex.exec(text)
     if (matches) {
-      results[i].found = true;
-      results[i].text = pure(matches[0]);
+      results[i].found = true
+      results[i].text = pure(matches[0])
     }
   }
 
