@@ -1,5 +1,3 @@
-/* global angular */
-
 angular.module('veasit.services', ['veasit.constants'])
 
 .factory('JourneyFactory', ['$http', '$q', function ($http, $q) {

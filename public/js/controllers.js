@@ -1,5 +1,3 @@
-/* global angular */
-
 angular.module('veasit.controllers', ['veasit.constants'])
 
 .controller('ListController', function ($scope, $http, $location, ngProgressFactory, API_ENDPOINT) {

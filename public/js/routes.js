@@ -1,5 +1,3 @@
-/* global angular */
-
 angular.module('veasit.routes', ['ngRoute'])
 
 .config([ '$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
