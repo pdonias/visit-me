@@ -141,7 +141,7 @@ apiRoutes.post('/annonce', function (req, res) {
     if (!error) {
       var json = { title: '', price: '', desc: '', img: '', superf: '', tel: '', addr: 'ERROR' }
 
-        // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
+      // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
       let parsinginfo
       if (url.includes('boncoin')) {
         parsinginfo = {
@@ -239,6 +239,19 @@ apiRoutes.post('/annonce', function (req, res) {
           // Specific stuff
         json.superf = json.superf.match(/Surface: (\d+m)/)
         json.superf = json.superf && json.superf[1] + '²'
+      } else if (url.includes('logic')) {
+        parsinginfo = {
+          title: {location: 'h1.auto2012_dettophead1txt1', fun: ['text']},
+          price: {location: 'h2.main-price', fun: ['text']},
+          desc: {location: '.offer-description-text', pre: '', fun: ['text']},
+          img: {location: '#photo', fun: ['html'], regex: /src="(.*?)"/},
+          superf: {location: 'span.offer-area-number', fun: ['text']}
+        }
+        json = parse(cheerio.load(html), parsinginfo)
+
+        // Specific stuff
+        // json.superf = json.superf.match(/Surface: (\d+m)/)
+        json.superf = json.superf + ' m²'
       }
 
         // Finally, we'll define the variables we're going to capture
