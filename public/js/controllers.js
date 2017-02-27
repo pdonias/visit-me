@@ -9,11 +9,12 @@ angular.module('veasit.controllers', ['veasit.constants'])
     {url: 'http://www.seloger.com', name: 'SeLoger', img: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Seloger-logo.gif'},
     {url: 'http://www.avendrealouer.fr', name: 'AVendreALouer', img: 'http://www.ordissinaute.fr/sites/default/files/styles/full_new_main_no_crop/public/field/image/avendrealouer-logo_0.jpg?itok=FxzOnyRR'},
     {url: 'http://www.pap.fr', name: 'PAP', img: 'http://www.pap.fr/images/logo-pap-127x70.png'},
-    {url: 'http://www.paruvendu.fr', name: 'ParuVendu', img: 'http://static.paruvendu.com/2017022108/communfo/img/structuresite/home/logoparuvendufr2016.png'}
+    {url: 'http://www.paruvendu.fr', name: 'ParuVendu', img: 'http://static.paruvendu.com/2017022108/communfo/img/structuresite/home/logoparuvendufr2016.png'},
+    {url: 'http://www.logic-immo.com', name: 'LogicImmo', img: 'http://static.paruvendu.com/2017022108/communfo/img/structuresite/home/logoparuvendufr2016.png'}
   ]
 
   $scope.emailFormat = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/
-  $scope.linkFormat = /https?:\/\/((www|mobile|m)\.)?(fnaim38|leboncoin|avendrealouer|paruvendu|pap|seloger)\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
+  $scope.linkFormat = /https?:\/\/((www|mobile|m)\.)?(logic-immo|fnaim38|leboncoin|avendrealouer|paruvendu|pap|seloger)\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
 
   $scope.data = {
     title: '',
