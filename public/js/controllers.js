@@ -84,6 +84,18 @@ angular.module('veasit.controllers', ['veasit.constants'])
       if ($scope.data.email != null) $scope.save()
     })
   }
+
+  $scope.getInfo = function () {
+    $http.get(API_ENDPOINT.url + '/getinfo').then(function (result) {
+      $scope.list = result.data
+      /*
+      for (var i in $scope.list) {
+        i.date = moment(i.date, 'YYYY-MM-DDThh:mm:ss').fromNow()
+      }
+      */
+      console.log(result)
+    })
+  }
 })
 
 .controller('HomeController', function ($scope, $http, $window, API_ENDPOINT) {

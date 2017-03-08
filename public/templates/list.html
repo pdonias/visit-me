@@ -97,12 +97,42 @@
     </div>
     <hr class="visible-xs"/>
     <div class="col-md-9">
+
       <h4>Lancez vos recherches !</h4>
       <p>Cliquez ci-dessous pour ouvrir les différents sites que nous savons analyser</p>
-      <div class="row">
-        <div class="col-md-4 col-xs-6" style="margin-bottom: 1em" ng-repeat="w in readableWebsites"><a href="{{w.url}}" target="_blank"><img src="{{w.img}}" alt="{{w.name}}" height="42px"/><br/>{{w.name}}</a></div>
-      </div>
+
+      <form>
+        <input type="text" placeholder="Code postal"/><br/>
+
+        <input type="radio" name="search_type" value="buy"/> Achat<br/>
+        <input type="radio" name="search_type" value="loc"/> Location<br/>
+
+        <input type="radio" name="type" value="flat"/> Appartement<br/>
+        <input type="radio" name="type" value="house"/> Maison<br/>
+
+        <input type="text" name="superf_min" placeholder="Surface minimum"/>
+        <input type="text" name="superf_max" placeholder="Surface maximum"/>
+        <input type="text" name="price_min" placeholder="Prix minimum"/>
+        <input type="text" name="price_max" placeholder="Prix maximum"/>
+
+        <a ng-click="getInfo()">click</a>
+
+        <input type="submit"/>
+      </form>
+
+      <ul>
+        <li ng-repeat="a in list" style="text-align:left;">
+          <a href="{{a.url}}">
+            <img width="32px" src="{{a.img}}" alt="img"/>
+            <b>{{a.title}}</b> {{a.info}} @{{a.date}}<br/>
+            {{a.price}} € | {{a.superf}} m2
+          </a>
+        </li>
+      </ul>
+
+
     </div>
+
   </div>
 
   <table class="table table-striped" ng-if="data.list.length != 0">
