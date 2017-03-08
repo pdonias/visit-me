@@ -10,8 +10,10 @@
       </form>
     </div>
 
-    <div class="col-md-6" id="brand">
-      <a href="/">veasit</a>
+    <div class="col-md-6" style="text-align:center;line-height:1">
+      <a href="/" id="brand">veasit</a><br/>
+      <a href="#" class="label label-default" ng-click="changeView('table')">table</a>
+      <a href="#" class="label label-default" ng-click="changeView('search')">search</a>
     </div>
 
     <div class="col-md-3">
@@ -51,55 +53,36 @@
   </div>
 </div>
 
-<div id="add-entry">
-
+<div id="add-entry" ng-if="view=='table'">
   <div class="alert alert-warning" ng-if="!AddForm.link.$valid"><b>Oh non!</b> Ce lien n'est pas valide. Peut-être que ce site n'est pas encore accepté sur notre plateforme.<br/>
     N'hésitez pas à nous envoyez un message sur <a style="color: yellow;" href="https://www.facebook.com/veasit/" target="_blank">Facebook</a> pour nous prévenir ;)</div>
     <form name="AddForm">
-
-  <div class="input-group">
-      <input type="text" name="link" autocomplete="off" ng-pattern="linkFormat" class="form-control" ng-model="link" placeholder="Lien vers une annonce (LeBonCoin, SeLoger, PAP, ParuVendu, FNAIM38, AVendreALouer)">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="sendLink()" ng-disabled="link == null || link.length < 15 || !AddForm.link.$valid">
-          <span class="hidden-xs">Ajouter</span>
-          <span class="visible-xs">+</span>
-        </button>
-      </span>
-  </div>
-</form>
-
+        <div class="input-group">
+          <input type="text" name="link" autocomplete="off" ng-pattern="linkFormat" class="form-control" ng-model="link" placeholder="Lien vers une annonce (LeBonCoin, SeLoger, PAP, ParuVendu, FNAIM38, AVendreALouer)">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="sendLink(link)" ng-disabled="link == null || link.length < 15 || !AddForm.link.$valid">
+              <span class="hidden-xs">Ajouter</span>
+              <span class="visible-xs">+</span>
+            </button>
+          </span>
+        </div>
+    </form>
 </div>
 
 
-<div id="warning-mail" ng-if="data.list.length != 0 && !EmailForm.email.$valid && !unsaved_changes" class="alert alert-warning">
+<div id="warning-mail" ng-if="view=='table' && data.list.length != 0 && !EmailForm.email.$valid && !unsaved_changes" class="alert alert-warning">
 <i>Renseignez une adresse email pour activer la <b>sauvegarde automatique des données</b>.</i>
 </div>
 
-<div id="warning-mail" ng-if="data.list.length != 0 && !EmailForm.email.$valid && unsaved_changes" class="alert alert-danger">
+<div id="warning-mail" ng-if="view=='table' && data.list.length != 0 && !EmailForm.email.$valid && unsaved_changes" class="alert alert-danger">
 <i>Vous avez des données non sauvegardées ! Renseigner une adresse email pour sauvegarder (sinon vous allez tout perdre, ce serait dommage).</i>
 </div>
 
 
-<div id="table" class="hidden-xs">
-
-  <div style="text-align:center;" class="alert alert-info" ng-if="data.list.length == 0">
-    <b>Oh non !</b> Vous n'avez pas d'annonce dans cette liste.<br/>
-    Copiez/collez un lien vers une annonce dans la barre en haut puis cliquez sur <b>Ajouter</b>.
-  </div>
-
-  <div ng-if="data.list.length == 0" class="row" style="text-align:center; color: #999; padding-bottom: 2em;">
+<div id="table" ng-if="view=='search'">
+  <div class="row" style="text-align:center; color: #999; padding-bottom: 2em;">
     <div class="col-md-3">
-      <h4>Je ne cherche pas en ce moment</h4><br/>
-      <p>Vous pouvez rentrer votre adresse mail pour recevoir un mail le jour où
-        vous chercherez un logement.</p>
-      <input type="text" placeholder="Adresse email" ng-change="changed()" ng-model="data.email"/>
-      <a class="btn btn-success btn-xs" ng-click="save()">Enregistrer</a>
-    </div>
-    <hr class="visible-xs"/>
-    <div class="col-md-9">
-
       <h4>Lancez vos recherches !</h4>
-      <p>Cliquez ci-dessous pour ouvrir les différents sites que nous savons analyser</p>
 
       <form>
         <input type="text" placeholder="Code postal"/><br/>
@@ -113,24 +96,61 @@
         <input type="text" name="superf_min" placeholder="Surface minimum"/>
         <input type="text" name="superf_max" placeholder="Surface maximum"/>
         <input type="text" name="price_min" placeholder="Prix minimum"/>
-        <input type="text" name="price_max" placeholder="Prix maximum"/>
+        <input type="text" name="price_max" placeholder="Prix maximum"/><br/>
 
-        <a ng-click="getInfo()">click</a>
-
-        <input type="submit"/>
+        <a class="btn btn-success btn-xs" ng-click="getInfo()">Recherche</a>
       </form>
+    </div>
+    <hr class="visible-xs"/>
+    <div class="col-md-9">
 
-      <ul>
-        <li ng-repeat="a in list" style="text-align:left;">
-          <a href="{{a.url}}">
-            <img width="32px" src="{{a.img}}" alt="img"/>
-            <b>{{a.title}}</b> {{a.info}} @{{a.date}}<br/>
-            {{a.price}} € | {{a.superf}} m2
-          </a>
-        </li>
-      </ul>
+        <div class="row" ng-repeat="a in list" style="text-align:left;border-bottom:1px solid #ccc">
+          <a href="{{a.url}}"><img class="col-md-2" src="{{a.img}}" alt="img"/></a>
+          <div class="col-md-9">
+            <h4><b>{{a.title}}</b> {{a.info}}</h4>
+            <p style="font-size:150%">{{a.price}} € | {{a.superf}} m2</p>
+            <p style="text-align:right">Ajoutée le <i>{{a.date}}</i></p>
+          </div>
+
+          <a class="col-md-1 btn btn-info" ng-click="sendLink(a.url)">Ajouter</a>
+        </div>
+
+    </div>
+  </div>
+</div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="table" class="hidden-xs" ng-if="view=='table'">
+
+  <div style="text-align:center;" class="alert alert-info" ng-if="data.list.length == 0">
+    <b>Oh non !</b> Vous n'avez pas d'annonce dans cette liste.<br/>
+    Copiez/collez un lien vers une annonce dans la barre en haut puis cliquez sur <b>Ajouter</b>.
+  </div>
+
+  <div ng-if="data.list.length == 0" class="row" style="text-align:center; color: #999; padding-bottom: 2em;">
+    <div class="col-md-12">
+      <h4>Lancez vos recherches !</h4>
+      <p>cliquez <a href="#" ng-click="changeView('search')">ici</a> pour lancer vos recherches</p>
     </div>
 
   </div>

@@ -101,6 +101,7 @@ var getListLeBonCoin = function () {
           }
           annoncesBonCoin[i] = $(this).scrape(frame, { string: false })
           annoncesBonCoin[i].date = annoncesBonCoin[i].date + 'T' + annoncesBonCoin[i].time.substr(annoncesBonCoin[i].time.length - 5) + ':00'
+          annoncesBonCoin[i].price = annoncesBonCoin[i].price.substr(0, annoncesBonCoin[i].price.length - 2)
         })
         resolve(annoncesBonCoin)
       } // endof if !error

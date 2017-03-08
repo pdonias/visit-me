@@ -1,7 +1,11 @@
 angular.module('veasit.controllers', ['veasit.constants'])
 
 .controller('ListController', function ($scope, $http, $location, ngProgressFactory, API_ENDPOINT) {
-  // $scope.view = "table";
+  $scope.view = 'search'
+
+  $scope.changeView = function (txt) {
+    $scope.view = txt
+  }
 
   $scope.readableWebsites = [
     {url: 'https://www.leboncoin.fr', name: 'Le Bon Coin', img: 'https://upload.wikimedia.org/wikipedia/fr/thumb/7/7d/Leboncoin.fr_Logo_2016.svg/1280px-Leboncoin.fr_Logo_2016.svg.png'},
@@ -61,7 +65,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
   // Add a link to the table
 
-  $scope.sendLink = function () {
+  $scope.sendLink = function (url) {
     $scope.adding = true
     $scope.progressbar = ngProgressFactory.createInstance()
     // $scope.progressbar.setColor('white');
@@ -69,7 +73,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
     $scope.loading = true
 
     // POST request to the back end, with the link
-    $http.post(API_ENDPOINT.url + '/annonce', {'link': $scope.link}).then(function (result) {
+    $http.post(API_ENDPOINT.url + '/annonce', {'link': url}).then(function (result) {
       $scope.progressbar.complete()
       $scope.loading = false
 
