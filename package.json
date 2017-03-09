@@ -17,6 +17,7 @@
     "ejs": "~2.4.1",
     "express": "~4.13.4",
     "jsonframe-cheerio": "^2.0.52",
+    "lodash": "^4.17.4",
     "moment": "^2.17.1",
     "mongoose": "^4.6.5",
     "morgan": "^1.7.0",
