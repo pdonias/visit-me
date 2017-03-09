@@ -1,11 +1,14 @@
 var express = require('express')
 var request = require('request')
 var cheerio = require('cheerio')
-var jsonframe = require('jsonframe-cheerio')
+// var jsonframe = require('jsonframe-cheerio')
 var moment = require('moment')
 var extractAddresses = require('address-extractor')
 var extractInfo = require('./info-extractor.js')
 var iconv = require('iconv-lite')
+
+var searchLeboncoin = require('./search-leboncoin.js')
+var searchSeloger = require('./search-seloger.js')
 
 var List = require('../models/List.js')
 
@@ -41,76 +44,10 @@ apiRoutes.post('/list/create', function (req, res, next) {
   })
 })
 
-var getListSeLoger = function () {
-  return new Promise(function (resolve, reject) {
-    var annoncesSeLoger = []
-    request.get({
-      uri: 'http://ws.seloger.com/search.xml?ci=690123&idtypebien=1&pxmin=150000&surfacemin=80&idtt=2',
-      encoding: null
-    }, function (error, response, html) {
-      // First we'll check to make sure no errors occurred when making the request
-      if (!error) {
-        var $ = cheerio.load(html, {
-          normalizeWhitespace: true,
-          xmlMode: true
-        })
-        $('recherche annonces annonce').each(function (i, elem) {
-          jsonframe($)
-          let frame = {
-            'price': 'prix',
-            'superf': 'surface',
-            'img': 'firstThumb',
-            'url': 'permaLien',
-            'title': 'titre',
-            'info': 'libelle',
-            'date': 'dtFraicheur'
-          }
-          annoncesSeLoger[i] = $(this).scrape(frame, { string: false })
-          // annoncesSeLoger[i].date = moment(annoncesSeLoger[i].date, 'YYYY-MM-DDThh:mm:ss').fromNow()
-        })
-        resolve(annoncesSeLoger)
-      } // endof if !error
-    }) // endof request.get
-  })
-}
+apiRoutes.post('/getinfo', function (req, res, next) {
+  var search = req.body.search
 
-var getListLeBonCoin = function () {
-  return new Promise(function (resolve, reject) {
-    var annoncesBonCoin = []
-    request.get({
-      uri: 'https://www.leboncoin.fr/ventes_immobilieres/offres/rhone_alpes/?th=1&location=Grenoble%2038000&parrot=0&ps=3&pe=5&sqs=2&sqe=7&ros=2&roe=3&ret=2',
-      encoding: null
-    }, function (error, response, html) {
-      // First we'll check to make sure no errors occurred when making the request
-      if (!error) {
-        var $ = cheerio.load(html, {
-          normalizeWhitespace: true,
-          xmlMode: false
-        })
-        $('section.tabsContent ul li').each(function (i, elem) {
-          jsonframe($)
-          let frame = {
-            'price': 'h3',
-            'superf': '',
-            'img': 'img@src',
-            'url': 'a@href',
-            'title': 'h2',
-            'info': '',
-            'date': 'p[itemprop=availabilityStarts]@content',
-            'time': 'p[itemprop=availabilityStarts]'
-          }
-          annoncesBonCoin[i] = $(this).scrape(frame, { string: false })
-          annoncesBonCoin[i].date = annoncesBonCoin[i].date + 'T' + annoncesBonCoin[i].time.substr(annoncesBonCoin[i].time.length - 5) + ':00'
-          annoncesBonCoin[i].price = annoncesBonCoin[i].price.substr(0, annoncesBonCoin[i].price.length - 2)
-        })
-        resolve(annoncesBonCoin)
-      } // endof if !error
-    }) // endof request.get
-  })
-}
-
-apiRoutes.get('/getinfo', function (req, res, next) {
-  Promise.all([ getListLeBonCoin(), getListSeLoger() ]).then(
+  Promise.all([ searchLeboncoin(search), searchSeloger(search) ]).then(
   function (results) {
     var result = results[0].concat(results[1])
     result.sort(function (a, b) {

@@ -2,6 +2,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
 .controller('ListController', function ($scope, $http, $location, ngProgressFactory, API_ENDPOINT) {
   $scope.view = 'search'
+  $scope.search = {}
 
   $scope.changeView = function (txt) {
     $scope.view = txt
@@ -90,7 +91,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
   }
 
   $scope.getInfo = function () {
-    $http.get(API_ENDPOINT.url + '/getinfo').then(function (result) {
+    $http.post(API_ENDPOINT.url + '/getinfo', {'search': $scope.search}).then(function (result) {
       $scope.list = result.data
       /*
       for (var i in $scope.list) {
