@@ -113,6 +113,7 @@ module.exports = function (search) {
             res[i] = $(this).scrape(frame, { string: false })
             res[i].date = res[i].date + 'T' + res[i].time.substr(res[i].time.length - 5) + ':00'
             res[i].price = res[i].price.substr(0, res[i].price.length - 2)
+            res[i].url = 'http:' + res[i].url
           })
           resolve(res)
         } // endof if !error
