@@ -17,7 +17,7 @@ const baseUrl = 'http://ws.seloger.com/search.xml'
 
 // Converts Veasit's search terms into GET params for third-party API
 function convert (search) {
-  const promise = new Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     const s = {}
 
     s.idtt = '&idtt=' + (search.search_type === 'buy' ? 2 : 1)
@@ -36,16 +36,16 @@ function convert (search) {
       s.surfacemax = '&surfacemax=' + search.superf_max
     }
 
-    var urlApi = 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=correspondance-code-insee-code-postal&q=' + search.cp + '&facet=insee_com&facet=code_comm'
+    const urlApi = 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=correspondance-code-insee-code-postal&q=' + search.cp + '&facet=insee_com&facet=code_comm'
     request.get({
       url: urlApi,
       json: true,
       headers: {'User-Agent': 'request'}
     }, (err, res, data) => {
       if (err) {
-        console.log('Error:', err)
+        reject(err)
       } else if (res.statusCode !== 200) {
-        console.log('Status:', res.statusCode)
+        reject(new Error(`Bad status code ${res.statusCode}`))
       } else {
         const dep = _.get(data, 'facet_groups[0].facets[0].name[0]') + _.get(data, 'facet_groups[0].facets[0].name[1]')
         const comm = _.get(data, 'facet_groups[1].facets[0].name')
@@ -54,15 +54,12 @@ function convert (search) {
       }
     })
   })
-
-  return promise
 }
 
 module.exports = function (search) {
   return new Promise(function (resolve, reject) {
     let s = {}
-    const promise = convert(search)
-    promise.then(function (result) {
+    convert(search).then(function (result) {
       s = result
 
       let searchUri = baseUrl + s.location + s.idtypebien + s.idtt + '&tri=d_dt_crea'
@@ -71,9 +68,9 @@ module.exports = function (search) {
       if (!_.isUndefined(s.pxmin)) searchUri += s.pxmin
       if (!_.isUndefined(s.pxmax)) searchUri += s.pxmax
 
-      console.log('SEARCHURI', searchUri)
+      console.log('search-leboncoin.js | ' + 'searchUri: ', searchUri)
 
-      const annoncesSeLoger = []
+      const res = []
       request.get({
         uri: searchUri,
         encoding: null
@@ -86,14 +83,16 @@ module.exports = function (search) {
           })
           $('recherche annonces annonce').each(function (i, elem) {
             jsonframe($)
-            annoncesSeLoger[i] = $(this).scrape(frame, { string: false })
-            // annoncesSeLoger[i].date = moment(annoncesSeLoger[i].date, 'YYYY-MM-DDThh:mm:ss').fromNow()
+            res[i] = $(this).scrape(frame, { string: false })
+            // res[i].date = moment(res[i].date, 'YYYY-MM-DDThh:mm:ss').fromNow()
           })
-          resolve(annoncesSeLoger)
-        } // endof if !error
+          resolve(res)
+        } else {
+          reject(error)
+        }
       }) // endof request.get
     }, function (err) {
-      console.log(err) // Error: "It broke"
+      reject(err)
     })
   })
 }
