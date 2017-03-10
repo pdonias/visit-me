@@ -5,21 +5,21 @@ const jsonframe = require('jsonframe-cheerio')
 const request = require('request')
 
 const frame = {
-  'price': 'prix',
-  'superf': 'surface',
-  'img': 'firstThumb',
-  'url': 'permaLien',
-  'title': 'titre',
-  'info': 'libelle',
-  'date': 'dtCreation'
+  price: 'prix',
+  superf: 'surface',
+  img: 'firstThumb',
+  url: 'permaLien',
+  title: 'titre',
+  info: 'libelle',
+  date: 'dtCreation'
 }
 const baseUrl = 'http://ws.seloger.com/search.xml'
 
 // Converts Veasit's search terms into GET params for third-party API
 function convert (search) {
-  const s = {}
+  const promise = new Promise(function (resolve, reject) {
+    const s = {}
 
-  var promise = new Promise(function (resolve, reject) {
     s.idtt = '&idtt=' + (search.search_type === 'buy' ? 2 : 1)
     s.idtypebien = '&idtypebien=' + (search.house_type === 'house' ? 2 : 1)
 
@@ -65,7 +65,12 @@ module.exports = function (search) {
     promise.then(function (result) {
       s = result
 
-      const searchUri = baseUrl + s.location + s.idtypebien + s.pxmin + s.surfacemin + s.pxmax + s.surfacemax + s.idtt + '&tri=d_dt_crea'
+      let searchUri = baseUrl + s.location + s.idtypebien + s.idtt + '&tri=d_dt_crea'
+      if (!_.isUndefined(s.surfacemin)) searchUri += s.surfacemin
+      if (!_.isUndefined(s.surfacemax)) searchUri += s.surfacemax
+      if (!_.isUndefined(s.pxmin)) searchUri += s.pxmin
+      if (!_.isUndefined(s.pxmax)) searchUri += s.pxmax
+
       console.log('SEARCHURI', searchUri)
 
       const annoncesSeLoger = []

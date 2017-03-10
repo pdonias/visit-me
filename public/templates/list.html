@@ -79,27 +79,31 @@
 </div>
 
 
-<div id="table" ng-if="view=='search'">
-  <div class="row" style="text-align:center; color: #999; padding-bottom: 2em;">
-    <div class="col-md-3">
+<div id="table" ng-if="view=='search'" style="padding: 0;">
+  <div class="row" style="text-align:center; color: #999;">
+    <div class="col-md-3" id="left-search">
       <h4>Lancez vos recherches !</h4>
+      <!--
       <pre>{{search}}</pre>
+      -->
 
       <form>
         <input type="text" ng-model="search.cp" placeholder="Code postal"/><br/>
 
-        <input type="radio" ng-model="search.search_type" name="search_type" value="buy"/> Achat<br/>
+        <input type="radio" ng-model="search.search_type" name="search_type" value="buy"/> Achat
         <input type="radio" ng-model="search.search_type" name="search_type" value="loc"/> Location<br/>
 
-        <input type="radio" ng-model="search.house_type" name="house_type" value="flat"/> Appartement<br/>
+        <input type="radio" ng-model="search.house_type" name="house_type" value="flat"/> Appartement
         <input type="radio" ng-model="search.house_type" name="house_type" value="house"/> Maison<br/>
 
-        <input type="text" ng-model="search.superf_min" name="superf_min" placeholder="Surface minimum"/>
-        <input type="text" ng-model="search.superf_max" name="superf_max" placeholder="Surface maximum"/>
-        <input type="text" ng-model="search.price_min" name="price_min" placeholder="Prix minimum"/>
-        <input type="text" ng-model="search.price_max" name="price_max" placeholder="Prix maximum"/><br/>
+        <h4 style="text-align: left;">Surface</h4>
+        <input type="text" ng-model="search.superf_min" name="superf_min" placeholder="Surface minimum" style="width: 40%;"/>
+        <input type="text" ng-model="search.superf_max" name="superf_max" placeholder="Surface maximum" style="width: 40%;"/>
+        <h4 style="text-align: left;">Prix</h4>
+        <input type="text" ng-model="search.price_min" name="price_min" placeholder="Prix minimum" style="width: 40%;"/>
+        <input type="text" ng-model="search.price_max" name="price_max" placeholder="Prix maximum" style="width: 40%;"/>
 
-        <a class="btn btn-success btn-xs" ng-click="getInfo()">Recherche</a>
+        <a class="btn btn-success" style="width: 80%; margin-top:2em;" ng-click="getInfo()">Recherche</a>
       </form>
     </div>
     <hr class="visible-xs"/>
