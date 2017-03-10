@@ -12,8 +12,8 @@
 
     <div class="col-md-6" style="text-align:center;line-height:1">
       <a href="/" id="brand">veasit</a><br/>
-      <a href="#" class="label label-default" ng-click="changeView('table')">table</a>
-      <a href="#" class="label label-default" ng-click="changeView('search')">search</a>
+      <a href="#" class="label label-default" ng-click="changeView('table')"><i class="fa fa-heart" aria-hidden="true"></i> Mes annonces</a>
+      <a href="#" class="label label-default" ng-click="changeView('search')"><i class="fa fa-search" aria-hidden="true"></i> Recherche</a>
     </div>
 
     <div class="col-md-3">
@@ -103,7 +103,7 @@
         <input type="text" ng-model="search.price_min" name="price_min" placeholder="Prix minimum" style="width: 40%;"/>
         <input type="text" ng-model="search.price_max" name="price_max" placeholder="Prix maximum" style="width: 40%;"/>
 
-        <a class="btn btn-success" style="width: 80%; margin-top:2em;" ng-click="getInfo()">Recherche</a>
+        <a class="btn btn-success" style="width: 80%; margin-top:2em;" ng-click="getInfo()"><i class="fa fa-search" aria-hidden="true"></i> Recherche</a>
       </form>
     </div>
     <hr class="visible-xs"/>
