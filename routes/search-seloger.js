@@ -58,10 +58,7 @@ function convert (search) {
 
 module.exports = function (search) {
   return new Promise(function (resolve, reject) {
-    let s = {}
-    convert(search).then(function (result) {
-      s = result
-
+    convert(search).then(function (s) {
       let searchUri = baseUrl + s.location + s.idtypebien + s.idtt + '&tri=d_dt_crea'
       if (!_.isUndefined(s.surfacemin)) searchUri += s.surfacemin
       if (!_.isUndefined(s.surfacemax)) searchUri += s.surfacemax
@@ -91,8 +88,6 @@ module.exports = function (search) {
           reject(error)
         }
       }) // endof request.get
-    }, function (err) {
-      reject(err)
-    })
+    }, reject)
   })
 }

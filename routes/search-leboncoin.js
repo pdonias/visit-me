@@ -29,13 +29,10 @@ function convert (search) {
     s.idtypebien = '&ret=' + (search.house_type === 'house' ? 1 : 2)
 
     // Manage superficy
-    if (search.superf_min) {
-      s.surfacemin = '&sqs=' + _.findKey(mapSurface, surf => surf >= search.superf_min)
-    } else {
-      s.surfacemin = '&sqs=0'
-    }
+    s.surfacemin = '&sqs=' + _.findKey(mapSurface, surf => surf >= (search.superf_min || 0))
+
     if (search.superf_max) {
-      s.surfacemax = '&sqe=' + _.findLastKey(mapSurface, surf => surf <= search.superf_max)
+      s.surfacemax = '&sqe=' + _.findKey(mapSurface, surf => surf >= search.superf_max)
     }
     // On LeBonCoin price is managed differently depending on if you buy or rent
     if (search.search_type === 'buy') {
@@ -54,30 +51,29 @@ function convert (search) {
       }
     }
 
-    const urlApi = 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=correspondance-code-insee-code-postal&q=' + search.cp + '&facet=nom_region'
-    request.get({
-      url: urlApi,
-      json: true,
-      headers: {'User-Agent': 'request'}
-    }, (err, res, data) => {
-      if (err) {
-        reject(err)
-      } else if (res.statusCode !== 200) {
-        reject(new Error(`Bad status code ${res.statusCode}`))
-      } else {
-        s.region = _.get(data, 'facet_groups[0].facets[0].name').replace(/'|-| /g, '_').toLowerCase()
-        resolve(s)
-      }
-    })
+    if (search.cp) {
+      const urlApi = 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=correspondance-code-insee-code-postal&q=' + search.cp + '&facet=nom_region'
+      request.get({
+        url: urlApi,
+        json: true,
+        headers: {'User-Agent': 'request'}
+      }, (err, res, data) => {
+        if (err) {
+          reject(err)
+        } else if (res.statusCode !== 200) {
+          reject(new Error(`Bad status code ${res.statusCode}`))
+        } else {
+          s.region = _.get(data, 'facet_groups[0].facets[0].name').replace(/'|-| /g, '_').toLowerCase()
+          resolve(s)
+        }
+      })
+    }
   })
 }
 
 module.exports = function (search) {
   return new Promise(function (resolve, reject) {
-    let s = {}
-    convert(search).then(function (result) {
-      s = result
-
+    convert(search).then(function (s) {
       let searchUri = baseUrl + s.type + '/offres/' + s.region + '/?th=1&parrot=0&location=' + search.cp + s.idtypebien
       if (!_.isUndefined(s.surfacemin)) searchUri += s.surfacemin
       if (!_.isUndefined(s.surfacemax)) searchUri += s.surfacemax
@@ -109,6 +105,6 @@ module.exports = function (search) {
           reject(error)
         }
       }) // endof request.get
-    })
+    }, reject)
   })
 }
