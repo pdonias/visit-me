@@ -78,8 +78,8 @@ module.exports = function (search) {
             normalizeWhitespace: true,
             xmlMode: true
           })
+          jsonframe($)
           $('recherche annonces annonce').each(function (i, elem) {
-            jsonframe($)
             res[i] = $(this).scrape(frame, { string: false })
             // res[i].date = moment(res[i].date, 'YYYY-MM-DDThh:mm:ss').fromNow()
           })

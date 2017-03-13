@@ -93,8 +93,8 @@ module.exports = function (search) {
             normalizeWhitespace: true,
             xmlMode: false
           })
+          jsonframe($)
           $('section.tabsContent ul li').each(function (i, elem) {
-            jsonframe($)
             res[i] = $(this).scrape(frame, { string: false })
             res[i].date = res[i].date + 'T' + res[i].time.substr(res[i].time.length - 5) + ':00'
             res[i].price = res[i].price.substr(0, res[i].price.length - 2)
