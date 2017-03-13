@@ -87,14 +87,14 @@
       <pre>{{search}}</pre>
       -->
 
-      <form>
-        <input type="text" ng-model="search.cp" placeholder="Code postal"/><br/>
+      <form name="metasearchForm">
+        <input required type="text" ng-model="search.cp" ng-pattern="/^[0-9]{5}$/" placeholder="Code postal"/><br/>
 
-        <input type="radio" ng-model="search.search_type" name="search_type" value="buy"/> Achat
-        <input type="radio" ng-model="search.search_type" name="search_type" value="loc"/> Location<br/>
+        <input required type="radio" ng-model="search.search_type" name="search_type" value="buy"/> Achat
+        <input required type="radio" ng-model="search.search_type" name="search_type" value="loc"/> Location<br/>
 
-        <input type="radio" ng-model="search.house_type" name="house_type" value="flat"/> Appartement
-        <input type="radio" ng-model="search.house_type" name="house_type" value="house"/> Maison<br/>
+        <input required type="radio" ng-model="search.house_type" name="house_type" value="flat"/> Appartement
+        <input required type="radio" ng-model="search.house_type" name="house_type" value="house"/> Maison<br/>
 
         <h4 style="text-align: left;">Surface</h4>
         <input type="text" ng-model="search.superf_min" name="superf_min" placeholder="Surface minimum" style="width: 40%;"/>
@@ -103,7 +103,7 @@
         <input type="text" ng-model="search.price_min" name="price_min" placeholder="Prix minimum" style="width: 40%;"/>
         <input type="text" ng-model="search.price_max" name="price_max" placeholder="Prix maximum" style="width: 40%;"/>
 
-        <a class="btn btn-success" style="width: 80%; margin-top:2em;" ng-click="getInfo()"><i class="fa fa-search" aria-hidden="true"></i> Recherche</a>
+        <a class="btn btn-success" ng-disabled="metasearchForm.$invalid" style="width: 80%; margin-top:2em;" ng-click="getInfo()"><i class="fa fa-search" aria-hidden="true"></i> Recherche</a>
       </form>
     </div>
     <hr class="visible-xs"/>

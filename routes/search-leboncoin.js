@@ -63,7 +63,8 @@ function convert (search) {
         } else if (res.statusCode !== 200) {
           reject(new Error(`Bad status code ${res.statusCode}`))
         } else {
-          s.region = _.get(data, 'facet_groups[0].facets[0].name').replace(/'|-| /g, '_').toLowerCase()
+          var region = _.get(data, 'facet_groups[0].facets[0].name')
+          if (region) s.region = region.replace(/'|-| /g, '_').toLowerCase()
           resolve(s)
         }
       })
