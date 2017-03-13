@@ -130,18 +130,13 @@ parser
 - output: a json containing all info about the entry
 */
 module.exports = function (url, html) {
-  let f, l
-  _.forEach(frames, function (value, key) {
-    if (url.includes(key)) {
-      // Get the adequate frame for the website
-      f = value
-      // Get if we need to decode or not
-      if (iconvNeeded[key]) l = cheerio.load(iconv.decode(html, 'iso-8859-1'))
-      else l = cheerio.load(html)
-    }
-  })
+  const key = _.findKey(frames, (frame, key) => _.includes(url, key))
+  const f = frames[key]
+  const l = iconvNeeded[key]
+    ? cheerio.load(iconv.decode(html, 'iso-8859-1'))
+    : cheerio.load(html)
 
-  var json = parser(l, f)
+  const json = parser(l, f)
   json.link = url
 
   return json
