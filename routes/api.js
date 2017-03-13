@@ -10,6 +10,8 @@ var iconv = require('iconv-lite')
 var searchLeboncoin = require('./search-leboncoin.js')
 var searchSeloger = require('./search-seloger.js')
 
+var parser = require('./parser.js')
+
 var List = require('../models/List.js')
 
 // bundle our routes
@@ -68,78 +70,6 @@ apiRoutes.get('/list/:id', function (req, res, next) {
   })
 })
 
-var parse = function ($, parsinginfo) {
-  // Create object that we'll return
-  var json = { title: '', price: '', desc: '', img: '', superf: '', tel: '', addr: '' }
-
-  // Get title
-  // TODO
-
-  // Get price and remove everything after €
-  $(parsinginfo.price.location).filter(function () {
-    json.price = $(this)[parsinginfo.price.fun[0]]()
-    for (var i = 1; i < parsinginfo.price.fun.length; i++) {
-      json.price = json.price[parsinginfo.price.fun[i]]()
-    }
-    json.price = json.price.replace(/(\r\n|\n|\r|\t| {2})/gm, '')
-  })
-
-  // Get description
-  if (parsinginfo.desc.pre !== '') {
-    $(parsinginfo.desc.location)[parsinginfo.desc.pre]().filter(function () {
-      json.desc = $(this)
-      for (var i = 0; i < parsinginfo.desc.fun.length; i++) {
-        json.desc = json.desc[parsinginfo.desc.fun[i]]()
-      }
-      json.desc = json.desc.replace(/(\r\n|\r|\t| {2})/gm, '')
-    })
-  } else {
-    $(parsinginfo.desc.location).filter(function () {
-      json.desc = $(this)
-      for (var i = 0; i < parsinginfo.desc.fun.length; i++) {
-        json.desc = json.desc[parsinginfo.desc.fun[i]]()
-      }
-      json.desc = json.desc.replace(/(\r\n|\r|\t| {2})/gm, '')
-    })
-  }
-
-  // Get address from description
-  json.address = extractAddresses(json.desc)[0] || 'À définir'
-
-  json.info = extractInfo(json.desc.toLowerCase())
-
-  json.notes = ''
-  for (var i = 0; i < json.info.length; i++) {
-    if (json.info[i].text !== '') json.notes += json.info[i].text + '\n'
-  }
-
-  // Get image
-  $(parsinginfo.img.location).filter(function () {
-    json.img = $(this)[parsinginfo.img.fun[0]]()
-    for (var i = 1; i < parsinginfo.img.fun.length; i++) {
-      json.img = json.img[parsinginfo.img.fun[i]]()
-    }
-    json.img = json.img.match(parsinginfo.img.regex)
-    json.img = json.img && json.img[1]
-  })
-
-  // Get superficy
-  $(parsinginfo.superf.location).filter(function () {
-    // console.log("############### "+parsinginfo.superf.fun[0]);
-    json.superf = $(this)[parsinginfo.superf.fun[0]]()
-    for (var i = 1; i < parsinginfo.superf.fun.length; i++) {
-      // console.log("############### "+parsinginfo.superf.fun[i]);
-      json.superf = json.superf[parsinginfo.superf.fun[i]]()
-    }
-    json.superf = json.superf.replace(/(\r\n|\n|\r|\t| {2})/gm, '')
-  })
-
-  // Get contact info
-  // TODO
-
-  return json
-}
-
 /*
 
   POST /api/annonce
@@ -162,123 +92,109 @@ apiRoutes.post('/annonce', function (req, res) {
       var json = { title: '', price: '', desc: '', img: '', superf: '', tel: '', addr: 'ERROR' }
 
       // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
-      let parsinginfo
       if (url.includes('boncoin')) {
-        parsinginfo = {
-          title: {location: '.no-border', fun: ['text']},
-          price: {location: 'h2.item_price span.value', fun: ['text']},
-          desc: {location: 'p.property.semibold', pre: '', fun: ['next', 'text']},
-          img: {location: 'div.item_image.big.popin-open.trackable', fun: ['html'], regex: /src="(.*?)"/},
-          superf: {location: 'section.properties', fun: ['text']}
+        const frame = {
+          title: '.no-border',
+          price: 'h2.item_price span.value || [0-9| ]+',
+          desc: 'p[itemprop=description]',
+          img: 'div.item_image.big.popin-open.trackable < html || src="(.*?)"',
+          superf: {
+            _s: 'section.properties',
+            _p: /Surface (\d+) m2/
+          }
         }
-        json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')), parsinginfo)
-
-          // Specific stuff
-        json.price = json.price.replace('Charges comprises', '')
-
-        json.superf = json.superf.match(/Surface(\d+ m2)/)
-        json.superf = json.superf && json.superf[1]
+        json = parser(cheerio.load(iconv.decode(html, 'iso-8859-1')), frame)
       } else if (url.includes('seloger')) {
-        parsinginfo = {
-          title: {location: '', fun: ['text']},
-          price: {location: '#price', fun: ['text']},
-          desc: {location: 'p.description', pre: '', fun: ['text']},
-          img: {location: 'ul#slider1', fun: ['html'], regex: /src="(.*?)"/},
-          superf: {location: 'ol.description-liste', fun: ['text']}
+        const frame = {
+          title: 'h1',
+          price: '#price || [0-9| ]+',
+          desc: 'p.description',
+          img: 'ul#slider1 < html || src="(.*?)"',
+          superf: {
+            _s: 'ol.description-liste',
+            _p: /Surface de (\d+)/
+          }
         }
-        json = parse(cheerio.load(html), parsinginfo)
-
-          // Specific stuff
-          // TODO remove whitespaces
-        json.superf = json.superf.match(/Surface de (\d+)/)
-        json.superf = json.superf && json.superf[1] + ' m²'
+        json = parser(cheerio.load(html), frame)
       } else if (url.includes('pap')) {
-        parsinginfo = {
-          title: {location: '.title', fun: ['text']},
-          price: {location: '.price', fun: ['text']},
-          desc: {location: 'p.item-description', pre: 'first', fun: ['text']},
-          img: {location: 'div.image-slider.showcase', fun: ['html'], regex: /src="(.*?)"/},
-          superf: {location: 'ul.item-summary', fun: ['text']}
+        const frame = {
+          title: 'h1',
+          price: '.price || [0-9| ]+',
+          desc: 'p.item-description',
+          img: 'div[data-hash=image0] img@src',
+          superf: {
+            _s: 'ul.item-summary',
+            _p: /Surface (\d+) m/
+          }
         }
-        json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')), parsinginfo)
-
-          // Specific stuff
-        json.superf = json.superf.match(/Surface(\d+)/)
-        json.superf = json.superf && json.superf[0]
-
-        json.superf = json.superf.replace('Surface', '') + 'm²'
+        json = parser(cheerio.load(iconv.decode(html, 'iso-8859-1')), frame)
       } else if (url.includes('paruvendu')) {
-        parsinginfo = {
-          title: {location: 'h1.auto2012_dettophead1txt1', fun: ['text']},
-          price: {location: '#autoprix', fun: ['text']},
-          desc: {location: '.im12_txt_ann.im12_txt_ann_auto', pre: '', fun: ['text']},
-          img: {location: 'div.imdet15-blcphomain', fun: ['html'], regex: /src="(.*?)"/},
-          superf: {location: 'ul.imdet15-infoscles', fun: ['children', 'first', 'next', 'text']}
+        const frame = {
+          title: 'h1.auto2012_dettophead1txt1',
+          price: '#autoprix || [0-9| ]+',
+          desc: '.im12_txt_ann.im12_txt_ann_auto',
+          img: 'div.imdet15-blcphomain < html || src="(.*?)"',
+          superf: {
+            _s: 'ul.imdet15-infoscles',
+            _p: /(\d+)m2/
+          }
         }
-        json = parse(cheerio.load(iconv.decode(html, 'iso-8859-1')), parsinginfo)
-
-          // Specific stuff
-        json.price += '€'
-        json.superf = json.superf.replace('Surface :', '').replace('environ', '')
+        json = parser(cheerio.load(iconv.decode(html, 'iso-8859-1')), frame)
       } else if (url.includes('fnaim38')) {
-        parsinginfo = {
-          title: {location: 'h1.auto2012_dettophead1txt1', fun: ['text']},
-          price: {location: '.prix', fun: ['text']},
-          desc: {location: '.description', pre: '', fun: ['text']},
-          img: {location: 'div.imageBig', fun: ['html'], regex: /src="(.*?)"/},
-          superf: {location: '.informations', fun: ['text']}
+        const frame = {
+          title: '',
+          price: '.prix || [0-9| ]+',
+          desc: '.description',
+          img: 'div.imageBig < html || src="(.*?)"',
+          superf: {
+            _s: '.informations',
+            _p: /Surface habitable : (\d+) m/
+          }
         }
-        json = parse(cheerio.load(html), parsinginfo)
-
-          // Specific stuff
-        json.superf = json.superf.match(/Surface habitable :(\d+ m)/)
-        json.superf = json.superf && json.superf[1] + '²'
+        json = parser(cheerio.load(html), frame)
       } else if (url.includes('mobile.avendrealouer')) {
-        parsinginfo = {
-          title: {location: 'h1.auto2012_dettophead1txt1', fun: ['text']},
-          price: {location: '.prix', fun: ['text']},
-          desc: {location: '.description', pre: '', fun: ['text']},
-          img: {location: '#slideList', fun: ['html'], regex: /src="(.*?)"/},
-          superf: {location: '.details', fun: ['children', 'first', 'text']}
+        const frame = {
+          title: '',
+          price: '.prix || [0-9| ]+',
+          desc: '.description',
+          img: '#slideList < html || src="(.*?)"',
+          superf: {
+            _s: '.details',
+            _p: /(\d+) Surface/
+          }
         }
-        json = parse(cheerio.load(html), parsinginfo)
-
-          // Specific stuff
-        json.superf = json.superf.replace('Surface (m²)', 'm²')
-          // json.superf = json.superf && json.superf[1]+"²";
+        json = parser(cheerio.load(html), frame)
       } else if (url.includes('avendrealouer')) {
-        parsinginfo = {
-          title: {location: 'h1.auto2012_dettophead1txt1', fun: ['text']},
-          price: {location: '#fd-price-val', fun: ['text']},
-          desc: {location: '#propertyDesc', pre: '', fun: ['text']},
-          img: {location: '.topSummary', fun: ['html'], regex: /src="(.*?)"/},
-          superf: {location: '#table', fun: ['text']}
+        const frame = {
+          title: '',
+          price: '#fd-price-val || [0-9| ]+',
+          desc: '#propertyDesc',
+          img: '.topSummary < html || src="(.*?)"',
+          superf: {
+            _s: '#table',
+            _p: /Surface: (\d+) m/
+          }
         }
-        json = parse(cheerio.load(html), parsinginfo)
-
-          // Specific stuff
-        json.superf = json.superf.match(/Surface: (\d+m)/)
-        json.superf = json.superf && json.superf[1] + '²'
+        json = parser(cheerio.load(html), frame)
       } else if (url.includes('logic')) {
-        parsinginfo = {
-          title: {location: 'h1.auto2012_dettophead1txt1', fun: ['text']},
-          price: {location: 'h2.main-price', fun: ['text']},
-          desc: {location: '.offer-description-text', pre: '', fun: ['text']},
-          img: {location: '#photo', fun: ['html'], regex: /src="(.*?)"/},
-          superf: {location: 'span.offer-area-number', fun: ['text']}
+        const frame = {
+          title: '',
+          price: 'h2.main-price || [0-9| ]+',
+          desc: '.offer-description-text',
+          img: '#photo < html || src="(.*?)"',
+          superf: {
+            _s: 'span.offer-area-number',
+            _p: /Surface: (\d+) m/
+          }
         }
-        json = parse(cheerio.load(html), parsinginfo)
-
-        // Specific stuff
-        // json.superf = json.superf.match(/Surface: (\d+m)/)
-        json.superf = json.superf + ' m²'
+        json = parser(cheerio.load(html), frame)
       }
 
-        // Finally, we'll define the variables we're going to capture
+      // Finally, we'll define the variables we're going to capture
       json.link = req.body.link
     }
 
-      // Debug
+    // Debug
     console.log(json)
 
     res.send(json)
