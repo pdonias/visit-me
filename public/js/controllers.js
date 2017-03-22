@@ -101,53 +101,53 @@ angular.module('veasit.controllers', ['veasit.constants'])
     const mapPrice = [0, 25000, 50000, 75000, 100000, 125000, 150000, 175000, 200000, 225000, 250000, 275000, 300000, 325000, 350000, 500000, 450000, 500000, 550000, 600000, 650000, 700000, 800000, 900000, 1000000, 1100000, 1200000, 1300000, 1400000, 1500000, 2000000, 999999999]
     const mapSurface = [0, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 200, 300, 500, 9999]
 
-    s.type = (search.search_type === 'buy' ? 'ventes_immobilieres' : 'locations')
-    s.idtypebien = '&ret=' + (search.house_type === 'house' ? 1 : 2)
+    const urlApi = 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=correspondance-code-insee-code-postal&q=' + search.cp + '&facet=nom_region'
 
-    // Manage superficy
-    s.surfacemin = '&sqs=' + _.findKey(mapSurface, surf => surf >= (search.superf_min || 0))
+    return $http.get(urlApi).then(function (result) {
+      var region = result.data.facet_groups[0].facets[0].name
+      if (region) s.region = region.replace(/'|-| /g, '_').toLowerCase()
 
-    if (search.superf_max) {
-      s.surfacemax = '&sqe=' + _.findKey(mapSurface, surf => surf >= search.superf_max)
-    }
-    // On LeBonCoin price is managed differently depending on if you buy or rent
-    if (search.search_type === 'buy') {
-      if (search.price_min) {
-        s.pricemin = '&ps=' + _.findKey(mapPrice, p => p >= search.price_min)
+      s.type = (search.search_type === 'buy' ? 'ventes_immobilieres' : 'locations')
+      s.idtypebien = '&ret=' + (search.house_type === 'house' ? 1 : 2)
+
+      // Manage superficy
+      s.surfacemin = '&sqs=' + _.findKey(mapSurface, surf => surf >= (search.superf_min || 0))
+
+      if (search.superf_max) {
+        s.surfacemax = '&sqe=' + _.findKey(mapSurface, surf => surf >= search.superf_max)
       }
-      if (search.price_max) {
-        s.pricemax = '&pe=' + _.findLastKey(mapPrice, p => p <= search.price_max)
+      // On LeBonCoin price is managed differently depending on if you buy or rent
+      if (search.search_type === 'buy') {
+        if (search.price_min) {
+          s.pricemin = '&ps=' + _.findKey(mapPrice, p => p >= search.price_min)
+        }
+        if (search.price_max) {
+          s.pricemax = '&pe=' + _.findLastKey(mapPrice, p => p <= search.price_max)
+        }
+      } else {
+        if (search.price_min) {
+          s.pricemin = '&mrs=' + search.price_min
+        }
+        if (search.price_max) {
+          s.pricemax = '&mre=' + search.price_max
+        }
       }
-    } else {
-      if (search.price_min) {
-        s.pricemin = '&mrs=' + search.price_min
-      }
-      if (search.price_max) {
-        s.pricemax = '&mre=' + search.price_max
-      }
-    }
 
-    if (search.cp) {
-      const urlApi = 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=correspondance-code-insee-code-postal&q=' + search.cp + '&facet=nom_region'
+      let searchUri = baseUrl + s.type + '/offres/' + s.region + '/?th=1&parrot=0&location=' + search.cp + s.idtypebien
+      if (!_.isUndefined(s.surfacemin)) searchUri += s.surfacemin
+      if (!_.isUndefined(s.surfacemax)) searchUri += s.surfacemax
+      if (!_.isUndefined(s.pricemin)) searchUri += s.pricemin
+      if (!_.isUndefined(s.pricemax)) searchUri += s.pricemax
 
-      $http.get(urlApi).then(function (result) {
-        var region = result.data.facet_groups[0].facets[0].name
-        if (region) s.region = region.replace(/'|-| /g, '_').toLowerCase()
-      })
-    }
-
-    let searchUri = baseUrl + s.type + '/offres/' + s.region + '/?th=1&parrot=0&location=' + search.cp + s.idtypebien
-    if (!_.isUndefined(s.surfacemin)) searchUri += s.surfacemin
-    if (!_.isUndefined(s.surfacemax)) searchUri += s.surfacemax
-    if (!_.isUndefined(s.pricemin)) searchUri += s.pricemin
-    if (!_.isUndefined(s.pricemax)) searchUri += s.pricemax
-
-    return searchUri
+      return searchUri
+    })
   }
 
   $scope.search = function () {
     // console.log('ok')
-    console.log(boncoin($scope.search))
+    boncoin($scope.search).then(function (searchUri) {
+      console.log(searchUri)
+    })
     /*
     $http.post(API_ENDPOINT.url + '/search', {'search': $scope.search}).then(function (result) {
       $scope.list = result.data
