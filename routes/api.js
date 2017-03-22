@@ -13,10 +13,47 @@ var List = require('../models/List.js')
 var apiRoutes = express.Router()
 
 /*
+  POST /api/gethtml
+Proxy to pretend that the POST request comes from the client IP
+*/
+apiRoutes.post('/gethtml', function (req, res, next) {
+  req.pipe(request.get(req.body.link)).pipe(res)
+})
 
+/*
+  POST /api/parse
+In order to parse an annonce
+*/
+apiRoutes.post('/parse', function (req, res) {
+  res.send(parser(req.body.link, req.body.html))
+})
+
+/*
+  POST /api/parse
+In order to parse an annonce
+*/
+apiRoutes.post('/search', function (req, res, next) {
+  var search = req.body.search
+
+  Promise.all([ searchLeboncoin(search), searchSeloger(search) ]).then(
+  function (results) {
+    var result = results[0].concat(results[1])
+    result.sort(function (a, b) {
+      // Turn your strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
+      return new Date(b.date) - new Date(a.date)
+    })
+    // result = result.concat(getListSeLoger())
+    res.send(result)
+  }
+)
+})
+
+/* * * * * * * * * * */
+
+/*
   POST /api/list
 In order to create or update a list
-
 */
 apiRoutes.post('/list', function (req, res) {
   // We're looking for an already existing list with email
@@ -41,52 +78,11 @@ apiRoutes.post('/list/create', function (req, res, next) {
   })
 })
 
-apiRoutes.post('/getinfo', function (req, res, next) {
-  var search = req.body.search
-
-  Promise.all([ searchLeboncoin(search), searchSeloger(search) ]).then(
-  function (results) {
-    var result = results[0].concat(results[1])
-    result.sort(function (a, b) {
-      // Turn your strings into dates, and then subtract them
-      // to get a value that is either negative, positive, or zero.
-      return new Date(b.date) - new Date(a.date)
-    })
-    // result = result.concat(getListSeLoger())
-    res.send(result)
-  }
-)
-})
-
 apiRoutes.get('/list/:id', function (req, res, next) {
   List.findOne({'_id': req.params.id}, function (err, list) {
     if (err) return next(err)
     res.json(list)
   })
-})
-
-/*
-
-  POST /api/annonce
-In order to parse an annonce
-
-*/
-apiRoutes.post('/annonce', function (req, res) {
-  const url = req.body.link
-
-  request.get({
-    uri: url,
-    encoding: null
-  }, function (error, response, html) {
-    if (!error) {
-      // TODO : change this to res.send(parser(url, html))
-      const json = parser(url, html)
-      console.log(json)
-      res.send(json)
-    }
-  })
-
-  return res
 })
 
 module.exports = apiRoutes

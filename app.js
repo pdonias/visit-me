@@ -22,6 +22,7 @@ app.set('view engine', 'ejs')
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // app.use(logger('dev'));
+app.use(bodyParser({limit: '50mb'}))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
