@@ -176,3 +176,21 @@ td span.delete-entry{
 td span.delete-entry:hover{
   cursor: pointer;
 }
+
+
+
+
+
+
+#left-search{
+  background: #222;
+  color: white;
+  padding : 2em;
+}
+#left-search input{
+  background: white;
+  color: #222;
+  padding: 0.6em;
+  margin: 0.1em;
+  border-radius: 5px;
+}

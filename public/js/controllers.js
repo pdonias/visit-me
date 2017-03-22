@@ -1,7 +1,12 @@
 angular.module('veasit.controllers', ['veasit.constants'])
 
 .controller('ListController', function ($scope, $http, $location, ngProgressFactory, API_ENDPOINT) {
-  // $scope.view = "table";
+  $scope.view = 'search'
+  $scope.search = {}
+
+  $scope.changeView = function (txt) {
+    $scope.view = txt
+  }
 
   $scope.readableWebsites = [
     {url: 'https://www.leboncoin.fr', name: 'Le Bon Coin', img: 'https://upload.wikimedia.org/wikipedia/fr/thumb/7/7d/Leboncoin.fr_Logo_2016.svg/1280px-Leboncoin.fr_Logo_2016.svg.png'},
@@ -61,7 +66,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
 
   // Add a link to the table
 
-  $scope.sendLink = function () {
+  $scope.sendLink = function (url) {
     $scope.adding = true
     $scope.progressbar = ngProgressFactory.createInstance()
     // $scope.progressbar.setColor('white');
@@ -69,7 +74,7 @@ angular.module('veasit.controllers', ['veasit.constants'])
     $scope.loading = true
 
     // POST request to the back end, with the link
-    $http.post(API_ENDPOINT.url + '/annonce', {'link': $scope.link}).then(function (result) {
+    $http.post(API_ENDPOINT.url + '/annonce', {'link': url}).then(function (result) {
       $scope.progressbar.complete()
       $scope.loading = false
 
@@ -82,6 +87,18 @@ angular.module('veasit.controllers', ['veasit.constants'])
       $scope.adding = false
 
       if ($scope.data.email != null) $scope.save()
+    })
+  }
+
+  $scope.getInfo = function () {
+    $http.post(API_ENDPOINT.url + '/getinfo', {'search': $scope.search}).then(function (result) {
+      $scope.list = result.data
+      /*
+      for (var i in $scope.list) {
+        i.date = moment(i.date, 'YYYY-MM-DDThh:mm:ss').fromNow()
+      }
+      */
+      console.log(result)
     })
   }
 })

@@ -10,8 +10,10 @@
       </form>
     </div>
 
-    <div class="col-md-6" id="brand">
-      <a href="/">veasit</a>
+    <div class="col-md-6" style="text-align:center;line-height:1">
+      <a href="/" id="brand">veasit</a><br/>
+      <a href="#" class="label label-default" ng-click="changeView('table')"><i class="fa fa-heart" aria-hidden="true"></i> Mes annonces</a>
+      <a href="#" class="label label-default" ng-click="changeView('search')"><i class="fa fa-search" aria-hidden="true"></i> Recherche</a>
     </div>
 
     <div class="col-md-3">
@@ -51,36 +53,99 @@
   </div>
 </div>
 
-<div id="add-entry">
-
+<div id="add-entry" ng-if="view=='table'">
   <div class="alert alert-warning" ng-if="!AddForm.link.$valid"><b>Oh non!</b> Ce lien n'est pas valide. Peut-être que ce site n'est pas encore accepté sur notre plateforme.<br/>
     N'hésitez pas à nous envoyez un message sur <a style="color: yellow;" href="https://www.facebook.com/veasit/" target="_blank">Facebook</a> pour nous prévenir ;)</div>
     <form name="AddForm">
-
-  <div class="input-group">
-      <input type="text" name="link" autocomplete="off" ng-pattern="linkFormat" class="form-control" ng-model="link" placeholder="Lien vers une annonce (LeBonCoin, SeLoger, PAP, ParuVendu, FNAIM38, AVendreALouer)">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="sendLink()" ng-disabled="link == null || link.length < 15 || !AddForm.link.$valid">
-          <span class="hidden-xs">Ajouter</span>
-          <span class="visible-xs">+</span>
-        </button>
-      </span>
-  </div>
-</form>
-
+        <div class="input-group">
+          <input type="text" name="link" autocomplete="off" ng-pattern="linkFormat" class="form-control" ng-model="link" placeholder="Lien vers une annonce (LeBonCoin, SeLoger, PAP, ParuVendu, FNAIM38, AVendreALouer)">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="sendLink(link)" ng-disabled="link == null || link.length < 15 || !AddForm.link.$valid">
+              <span class="hidden-xs">Ajouter</span>
+              <span class="visible-xs">+</span>
+            </button>
+          </span>
+        </div>
+    </form>
 </div>
 
 
-<div id="warning-mail" ng-if="data.list.length != 0 && !EmailForm.email.$valid && !unsaved_changes" class="alert alert-warning">
+<div id="warning-mail" ng-if="view=='table' && data.list.length != 0 && !EmailForm.email.$valid && !unsaved_changes" class="alert alert-warning">
 <i>Renseignez une adresse email pour activer la <b>sauvegarde automatique des données</b>.</i>
 </div>
 
-<div id="warning-mail" ng-if="data.list.length != 0 && !EmailForm.email.$valid && unsaved_changes" class="alert alert-danger">
+<div id="warning-mail" ng-if="view=='table' && data.list.length != 0 && !EmailForm.email.$valid && unsaved_changes" class="alert alert-danger">
 <i>Vous avez des données non sauvegardées ! Renseigner une adresse email pour sauvegarder (sinon vous allez tout perdre, ce serait dommage).</i>
 </div>
 
 
-<div id="table" class="hidden-xs">
+<div id="table" ng-if="view=='search'" style="padding: 0;">
+  <div class="row" style="text-align:center; color: #999;">
+    <div class="col-md-3" id="left-search">
+      <h4>Lancez vos recherches !</h4>
+      <!--
+      <pre>{{search}}</pre>
+      -->
+
+      <form name="metasearchForm">
+        <input required type="text" ng-model="search.cp" ng-pattern="/^[0-9]{5}$/" placeholder="Code postal"/><br/>
+
+        <input required type="radio" ng-model="search.search_type" name="search_type" value="buy"/> Achat
+        <input required type="radio" ng-model="search.search_type" name="search_type" value="loc"/> Location<br/>
+
+        <input required type="radio" ng-model="search.house_type" name="house_type" value="flat"/> Appartement
+        <input required type="radio" ng-model="search.house_type" name="house_type" value="house"/> Maison<br/>
+
+        <h4 style="text-align: left;">Surface</h4>
+        <input type="text" ng-model="search.superf_min" name="superf_min" placeholder="Surface minimum" style="width: 40%;"/>
+        <input type="text" ng-model="search.superf_max" name="superf_max" placeholder="Surface maximum" style="width: 40%;"/>
+        <h4 style="text-align: left;">Prix</h4>
+        <input type="text" ng-model="search.price_min" name="price_min" placeholder="Prix minimum" style="width: 40%;"/>
+        <input type="text" ng-model="search.price_max" name="price_max" placeholder="Prix maximum" style="width: 40%;"/>
+
+        <a class="btn btn-success" ng-disabled="metasearchForm.$invalid" style="width: 80%; margin-top:2em;" ng-click="getInfo()"><i class="fa fa-search" aria-hidden="true"></i> Recherche</a>
+      </form>
+    </div>
+    <hr class="visible-xs"/>
+    <div class="col-md-9">
+
+        <div class="row" ng-repeat="a in list" style="text-align:left;border-bottom:1px solid #ccc">
+          <a href="{{a.url}}"><img class="col-md-2" src="{{a.img}}" alt="img"/></a>
+          <div class="col-md-9">
+            <h4><b>{{a.title}}</b> {{a.info}}</h4>
+            <p style="font-size:150%">{{a.price}} € | {{a.superf}} m2</p>
+            <p style="text-align:right">Ajoutée le <i>{{a.date}}</i></p>
+          </div>
+
+          <a class="col-md-1 btn btn-info" ng-click="sendLink(a.url)">Ajouter</a>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="table" class="hidden-xs" ng-if="view=='table'">
 
   <div style="text-align:center;" class="alert alert-info" ng-if="data.list.length == 0">
     <b>Oh non !</b> Vous n'avez pas d'annonce dans cette liste.<br/>
@@ -88,21 +153,11 @@
   </div>
 
   <div ng-if="data.list.length == 0" class="row" style="text-align:center; color: #999; padding-bottom: 2em;">
-    <div class="col-md-3">
-      <h4>Je ne cherche pas en ce moment</h4><br/>
-      <p>Vous pouvez rentrer votre adresse mail pour recevoir un mail le jour où
-        vous chercherez un logement.</p>
-      <input type="text" placeholder="Adresse email" ng-change="changed()" ng-model="data.email"/>
-      <a class="btn btn-success btn-xs" ng-click="save()">Enregistrer</a>
-    </div>
-    <hr class="visible-xs"/>
-    <div class="col-md-9">
+    <div class="col-md-12">
       <h4>Lancez vos recherches !</h4>
-      <p>Cliquez ci-dessous pour ouvrir les différents sites que nous savons analyser</p>
-      <div class="row">
-        <div class="col-md-4 col-xs-6" style="margin-bottom: 1em" ng-repeat="w in readableWebsites"><a href="{{w.url}}" target="_blank"><img src="{{w.img}}" alt="{{w.name}}" height="42px"/><br/>{{w.name}}</a></div>
-      </div>
+      <p>cliquez <a href="#" ng-click="changeView('search')">ici</a> pour lancer vos recherches</p>
     </div>
+
   </div>
 
   <table class="table table-striped" ng-if="data.list.length != 0">
